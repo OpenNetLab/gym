@@ -1,0 +1,47 @@
+def build(bld):
+    module= bld.create_ns3_module('ex-webrtc')
+    module.env.append_value("CXXFLAGS", "-I/home/zsy/webrtc2/webrtc/src/")
+    module.env.append_value("LINKFLAGS", ["-L/home/zsy/webrtc2/webrtc/src/out/m84/obj/"])
+    module.env.append_value("LIB", ["webrtc"])
+    module.env.append_value('CXXFLAGS', '-DWEBRTC_POSIX')
+    module.source = [
+    'model/webrtc-header.cc',
+    'model/webrtclog.cc', 
+    'model/webrtc-util.cc',
+    'api/test/create_frame_generator.cc',
+    'test/encoder_settings.cc',
+    'test/fake_decoder.cc',
+    'test/fake_encoder.cc',
+    'test/fake_vp8_decoder.cc',
+    'test/fake_vp8_encoder.cc',
+    'test/field_trial.cc',
+    'test/frame_forwarder.cc',
+    'test/frame_generator.cc',
+    'test/frame_generator_capturer.cc',
+    'test/frame_utils.cc',
+    'test/goog_cc_printer.cc',
+    'test/rtp_header_parser.cc',
+    'test/task_queue_for_test.cc',
+    'test/test_video_capturer.cc',
+    'test/logging/file_log_writer.cc',
+    'test/logging/log_writer.cc',
+    'test/scenario/call_client.cc',
+    'test/scenario/column_printer.cc',
+    'test/scenario/hardware_codecs.cc',
+    'test/scenario/network_node.cc',
+    'test/scenario/performance_stats.cc',
+    'test/scenario/scenario_config.cc',
+    'test/scenario/stats_collection.cc',
+    'test/scenario/video_frame_matcher.cc',
+    'test/testsupport/file_utils.cc',
+    'test/testsupport/file_utils_override.cc',
+    'test/testsupport/ivf_video_frame_generator.cc',
+    ]
+    headers = bld(features='ns3header')
+    headers.module = 'ex-webrtc'
+    headers.source = [
+    'model/webrtc-defines.h',
+    'model/webrtc-header.h',
+    'model/webrtclog.h',  
+    'model/webrtc-util.h',
+	]
