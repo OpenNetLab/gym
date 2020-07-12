@@ -9,9 +9,9 @@
 #include "modules/utility/include/process_thread.h"
 #include "system_wrappers/include/clock.h"
 namespace webrtc{
-class RealTimeController:public TimeController{
+class MyRealTimeController:public TimeController{
 public:
-  RealTimeController();
+  MyRealTimeController();
 
   Clock* GetClock() override;
   TaskQueueFactory* GetTaskQueueFactory() override;

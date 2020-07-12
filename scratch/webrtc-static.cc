@@ -50,10 +50,10 @@ static NodeContainer BuildExampleTopo (uint64_t bps,
 }
 static double simDuration=1;
 int main(int argc, char *argv[]){
+    LogComponentEnable("WebrtcTag",LOG_LEVEL_ALL);
     GlobalValue::Bind ("SimulatorImplementationType", StringValue ("ns3::RealtimeSimulatorImpl"));
     init_webrtc_log();
     //set_test_clock_webrtc();
-    test_webrun();
     uint32_t ns3_last=Simulator::Now().GetMilliSeconds();
     uint32_t webrtc_last=webrtc_time_millis();
     Simulator::Stop (Seconds(simDuration));
@@ -62,6 +62,15 @@ int main(int argc, char *argv[]){
     uint32_t webrtc_time=webrtc_time_millis();
     std::cout<<ns3_time-ns3_last<<" "<<webrtc_time-webrtc_last<<std::endl;
     std::cout<<webrtc_last<<std::endl;
+    test_match_active();
     Simulator::Destroy();
+    Ptr<Packet> sent=Create<Packet>(0);
+    WebrtcTag tag1;
+    tag1.SetData(WebrtcTag::RTCP,1234,4321);
+    sent->AddPacketTag(tag1);
+    Ptr<Packet> recv=sent->Copy();
+    WebrtcTag tag2;
+    recv->RemovePacketTag(tag2);
+    std::cout<<"seq "<<tag2.GetSeq()<<" "<<tag2.GetSentTime()<<std::endl;
     return 0;
 }

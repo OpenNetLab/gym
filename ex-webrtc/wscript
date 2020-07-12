@@ -5,10 +5,12 @@ def build(bld):
     module.env.append_value("LIB", ["webrtc"])
     module.env.append_value('CXXFLAGS', '-DWEBRTC_POSIX')
     module.source = [
-    'model/webrtc-header.cc',
+    'model/webrtc-config.cc',
     'model/webrtclog.cc', 
+    'model/webrtc-tag.cc',    
     'model/webrtc-util.cc',
     'api/test/create_frame_generator.cc',
+    'api/test/network_emulation/network_emulation_interfaces.cc',
     'test/encoder_settings.cc',
     'test/fake_decoder.cc',
     'test/fake_encoder.cc',
@@ -33,15 +35,17 @@ def build(bld):
     'test/scenario/scenario_config.cc',
     'test/scenario/stats_collection.cc',
     'test/scenario/video_frame_matcher.cc',
+    'test/scenario/video_stream2.cc',
     'test/testsupport/file_utils.cc',
     'test/testsupport/file_utils_override.cc',
     'test/testsupport/ivf_video_frame_generator.cc',
     ]
     headers = bld(features='ns3header')
     headers.module = 'ex-webrtc'
-    headers.source = [
+    headers.source = [      
+    'model/webrtc-config.h',
     'model/webrtc-defines.h',
-    'model/webrtc-header.h',
     'model/webrtclog.h',  
+    'model/webrtc-tag.h', 
     'model/webrtc-util.h',
 	]

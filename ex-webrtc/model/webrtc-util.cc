@@ -23,26 +23,26 @@ class MainThread : public rtc::Thread {
   CurrentThreadSetter current_setter_;
 };
 }  // namespace
-RealTimeController::RealTimeController()
+MyRealTimeController::MyRealTimeController()
     : task_queue_factory_(CreateDefaultTaskQueueFactory()),
       main_thread_(std::make_unique<MainThread>()) {
   main_thread_->SetName("Main", this);
 }
 
-Clock* RealTimeController::GetClock() {
+Clock* MyRealTimeController::GetClock() {
   return Clock::GetRealTimeClock();
 }
 
-TaskQueueFactory* RealTimeController::GetTaskQueueFactory() {
+TaskQueueFactory* MyRealTimeController::GetTaskQueueFactory() {
   return task_queue_factory_.get();
 }
 
-std::unique_ptr<ProcessThread> RealTimeController::CreateProcessThread(
+std::unique_ptr<ProcessThread> MyRealTimeController::CreateProcessThread(
     const char* thread_name) {
   return ProcessThread::Create(thread_name);
 }
 
-std::unique_ptr<rtc::Thread> RealTimeController::CreateThread(
+std::unique_ptr<rtc::Thread> MyRealTimeController::CreateThread(
     const std::string& name,
     std::unique_ptr<rtc::SocketServer> socket_server) {
   if (!socket_server)
@@ -53,11 +53,11 @@ std::unique_ptr<rtc::Thread> RealTimeController::CreateThread(
   return res;
 }
 
-rtc::Thread* RealTimeController::GetMainThread() {
+rtc::Thread* MyRealTimeController::GetMainThread() {
   return main_thread_.get();
 }
 
-void RealTimeController::AdvanceTime(TimeDelta duration) {
+void MyRealTimeController::AdvanceTime(TimeDelta duration) {
   main_thread_->ProcessMessages(duration.ms());
 }
 }  // namespace webrtc
@@ -89,6 +89,6 @@ int64_t webrtc_time_nanos(){
     return rtc::TimeNanos();
 }
 std::unique_ptr<webrtc::TimeController> CreateTimeController(){
-    return std::make_unique<webrtc::RealTimeController>();
+    return std::make_unique<webrtc::MyRealTimeController>();
 }  
 }

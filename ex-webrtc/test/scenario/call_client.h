@@ -20,7 +20,7 @@
 #include "api/test/time_controller.h"
 #include "call/call.h"
 #include "modules/audio_device/include/test_audio_device.h"
-#include "test/goog_cc_printer.h"
+#include "modules/congestion_controller/goog_cc/test/goog_cc_printer.h"
 #include "rtc_base/constructor_magic.h"
 #include "rtc_base/task_queue_for_test.h"
 #include "test/logging/log_writer.h"
@@ -117,13 +117,17 @@ class CallClient : public EmulatedNetworkReceiverInterface {
   // for media streams in the expected runtime environment (essentially what
   // CallClient does internally for GetStats()).
   void SendTask(std::function<void()> task);
-
+  void SetCustomTransport(NetworkNodeTransport *transport,bool own);
+  Call *GetCall(){return call_.get();}
  private:
   friend class Scenario;
   friend class CallClientPair;
   friend class SendVideoStream;
   friend class VideoStreamPair;
   friend class ReceiveVideoStream;
+  friend class SendVideoStream2;
+  friend class VideoStreamPair2;
+  friend class ReceiveVideoStream2;
   friend class SendAudioStream;
   friend class ReceiveAudioStream;
   friend class AudioStreamPair;
@@ -144,6 +148,7 @@ class CallClient : public EmulatedNetworkReceiverInterface {
   LoggingNetworkControllerFactory network_controller_factory_;
   CallClientFakeAudio fake_audio_setup_;
   std::unique_ptr<Call> call_;
+  bool own_transport_{true};
   std::unique_ptr<NetworkNodeTransport> transport_;
   std::unique_ptr<RtpHeaderParser> const header_parser_;
   std::vector<std::pair<EmulatedEndpoint*, uint16_t>> endpoints_;
