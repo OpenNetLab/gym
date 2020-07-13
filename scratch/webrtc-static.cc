@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "ns3/webrtc-defines.h"
 #include "ns3/core-module.h"
 #include "ns3/applications-module.h"
@@ -60,7 +61,9 @@ static void InstallWebrtcApplication( Ptr<Node> sender,
 						uint16_t send_port,
                         uint16_t recv_port,
                         float startTime,
-                        float stopTime,webrtc::test::WebrtcSessionManager *manager)
+                        float stopTime,
+                        WebrtcSessionManager *manager,
+                        WebrtcTrace *trace=nullptr)
 {
     Ptr<WebrtcSender> sendApp = CreateObject<WebrtcSender> (manager);
 	Ptr<WebrtcReceiver> recvApp = CreateObject<WebrtcReceiver>(manager);
@@ -74,28 +77,52 @@ static void InstallWebrtcApplication( Ptr<Node> sender,
     ipv4=sender->GetObject<Ipv4> ();
     addr=ipv4->GetAddress (1, 0).GetLocal ();
     recvApp->ConfigurePeer(addr,send_port);
+    if(trace){
+        sendApp->SetBwTraceFuc(MakeCallback(&WebrtcTrace::OnBW,trace));
+    }
     sendApp->SetStartTime (Seconds (startTime));
     sendApp->SetStopTime (Seconds (stopTime));
     recvApp->SetStartTime (Seconds (startTime));
     recvApp->SetStopTime (Seconds (stopTime));	
 }
-static float simDuration=1;
+static float simDuration=100;
 float appStart=0.1;
-float appStop=simDuration;
+float appStop=simDuration-1;
 int main(int argc, char *argv[]){
     LogComponentEnable("WebrtcSender",LOG_LEVEL_ALL);
     LogComponentEnable("WebrtcReceiver",LOG_LEVEL_ALL);
     GlobalValue::Bind ("SimulatorImplementationType", StringValue ("ns3::RealtimeSimulatorImpl"));
-    init_webrtc_log();
-    set_test_clock_webrtc();
+    //init_webrtc_log();
+    //set_test_clock_webrtc();
 	uint64_t linkBw   = TOPO_DEFAULT_BW;
     uint32_t msDelay  = TOPO_DEFAULT_PDELAY;
     uint32_t msQDelay = TOPO_DEFAULT_QDELAY;
+    CommandLine cmd;
+    std::string instance=std::string("1");
+    std::string loss_str("0");
+    cmd.AddValue ("it", "instacne", instance);
+	cmd.AddValue ("lo", "loss",loss_str);
+    cmd.Parse (argc, argv);
+    int loss_integer=std::stoi(loss_str);
+    double loss_rate=loss_integer*1.0/1000;
+    std::string webrtc_log_com;
+    if(loss_integer>0){
+        webrtc_log_com="_gccl"+std::to_string(loss_integer)+"_";
+    }else{
+        webrtc_log_com="_gcc_";
+    }
     bool enable_random_loss=false;
+    if(loss_integer>0){
+        Config::SetDefault ("ns3::RateErrorModel::ErrorRate", DoubleValue (loss_rate));
+        Config::SetDefault ("ns3::RateErrorModel::ErrorUnit", StringValue ("ERROR_UNIT_PACKET"));
+        Config::SetDefault ("ns3::BurstErrorModel::ErrorRate", DoubleValue (loss_rate));
+        Config::SetDefault ("ns3::BurstErrorModel::BurstSize", StringValue ("ns3::UniformRandomVariable[Min=1|Max=3]"));
+        enable_random_loss=true;
+    }
     uint16_t sendPort=5432;
     uint16_t recvPort=5000;
     
-    std::unique_ptr<webrtc::test::WebrtcSessionManager> webrtc_manaager(new webrtc::test::WebrtcSessionManager());
+    std::unique_ptr<WebrtcSessionManager> webrtc_manaager(new WebrtcSessionManager());
     webrtc_manaager->SetFrameHxW(720,1280);
     uint32_t min_rate=300;
     uint32_t start_rate=500;
@@ -103,18 +130,22 @@ int main(int argc, char *argv[]){
     webrtc_manaager->SetRate(min_rate,start_rate,max_rate);
     webrtc_manaager->CreateClients();
     NodeContainer nodes = BuildExampleTopo(linkBw, msDelay, msQDelay,enable_random_loss);
-
     
-    
-    InstallWebrtcApplication(nodes.Get(0),nodes.Get(1),sendPort,recvPort,appStart,appStop,webrtc_manaager.get());
+    int test_pair=1;
+    std::string log=instance+webrtc_log_com+std::to_string(test_pair);    
+    WebrtcTrace trace1;
+    trace1.Log(log,WebrtcTrace::E_WEBRTC_BW);
+    InstallWebrtcApplication(nodes.Get(0),nodes.Get(1),sendPort,recvPort,appStart,appStop,
+    webrtc_manaager.get(),&trace1);
     sendPort++;
     recvPort++;
+    test_pair++;
     
     
     
     Simulator::Stop (Seconds(simDuration));
     Simulator::Run ();
     Simulator::Destroy();
-
+    std::cout<<"out"<<std::endl;
     return 0;
 }

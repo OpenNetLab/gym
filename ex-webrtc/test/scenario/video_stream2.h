@@ -135,15 +135,11 @@ class VideoStreamPair2 {
   SendVideoStream2* send() { return &send_stream_; }
   ReceiveVideoStream2* receive() { return &receive_stream_; }
   VideoFrameMatcher* matcher() { return &matcher_; }
-
- private:
-  friend class WebrtcSessionManager;
   VideoStreamPair2(CallClient* sender,
                   CallClient* receiver,
                   VideoStreamConfig config);
-
+ private:
   const VideoStreamConfig config_;
-
   VideoFrameMatcher matcher_;
   SendVideoStream2 send_stream_;
   ReceiveVideoStream2 receive_stream_;

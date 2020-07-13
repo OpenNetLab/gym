@@ -106,6 +106,7 @@ class CallClient : public EmulatedNetworkReceiverInterface {
   DataRate send_bandwidth() {
     return DataRate::BitsPerSec(GetStats().send_bandwidth_bps);
   }
+  uint32_t last_bandwidth_bps();
   DataRate target_rate() const;
   DataRate stable_target_rate() const;
   DataRate padding_rate() const;

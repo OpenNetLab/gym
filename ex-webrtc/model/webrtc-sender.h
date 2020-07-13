@@ -14,11 +14,13 @@ namespace ns3{
 //DataSize::Bytes(PacketOverhead::kDefault)
 class WebrtcSender:public webrtc::test::TransportBase,public Application{
 public:
-    WebrtcSender(webrtc::test::WebrtcSessionManager *manager);
+    WebrtcSender(WebrtcSessionManager *manager);
     ~WebrtcSender() override;
     InetSocketAddress GetLocalAddress();
     void Bind(uint16_t port);
     void ConfigurePeer(Ipv4Address addr,uint16_t port);
+    typedef Callback<void,uint32_t,uint32_t> TraceBandwidth;
+    void SetBwTraceFuc(TraceBandwidth cb);
     //can not use here
     void Construct(webrtc::Clock* sender_clock, webrtc::Call* sender_call) override{}
   bool SendRtp(const uint8_t* packet,
@@ -33,7 +35,7 @@ private:
     void SendToNetwork(Ptr<Packet> p);
     void RecvPacket(Ptr<Socket> socket);
     bool m_running{false};
-    webrtc::test::WebrtcSessionManager *m_manager{nullptr};
+    WebrtcSessionManager *m_manager{nullptr};
     webrtc::Clock *m_clock;
     uint16_t m_bindPort;
     Ptr<Socket> m_socket;
@@ -43,6 +45,10 @@ private:
     webrtc::Call* m_call{nullptr};
     uint32_t m_seq{1};
     AtomicLock m_qLock;
-    std::deque<Ptr<Packet>> m_dataQ;  
+    std::deque<Ptr<Packet>> m_dataQ;
+    int64_t m_lastTraceTime{0};
+    TraceBandwidth m_traceBw;
+    uint32_t m_packetOverhead{0};
+    uint32_t m_initial_time{0};
 };   
 }

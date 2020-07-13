@@ -23,7 +23,7 @@ EmulatedIpPacket::EmulatedIpPacket(const rtc::SocketAddress& from,
       headers_size(to.ipaddr().overhead() + application_overhead +
                    cricket::kUdpHeaderSize),
       arrival_time(arrival_time) {
-  RTC_DCHECK(to.family() == AF_INET || to.family() == AF_INET6);
+  //RTC_DCHECK(to.family() == AF_INET || to.family() == AF_INET6);
 }
 
 }  // namespace webrtc

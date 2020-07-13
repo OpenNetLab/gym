@@ -13,7 +13,7 @@
 namespace ns3{
 class WebrtcReceiver:public webrtc::test::TransportBase,public Application{
 public:
-  WebrtcReceiver(webrtc::test::WebrtcSessionManager *manager);
+  WebrtcReceiver(WebrtcSessionManager *manager);
   ~WebrtcReceiver() override;
     InetSocketAddress GetLocalAddress();
     void Bind(uint16_t port);
@@ -31,7 +31,7 @@ private:
     void SendToNetwork(Ptr<Packet> p);
     void RecvPacket(Ptr<Socket> socket);
     bool m_running{false};
-    webrtc::test::WebrtcSessionManager *m_manager{nullptr};
+    WebrtcSessionManager *m_manager{nullptr};
     webrtc::Clock *m_clock;
     uint16_t m_bindPort;
     Ptr<Socket> m_socket;
@@ -43,5 +43,6 @@ private:
     uint32_t m_seq{1};
     AtomicLock m_qLock;
     std::deque<Ptr<Packet>> m_dataQ;
+    uint32_t m_packetOverhead{0};
 };    
 }

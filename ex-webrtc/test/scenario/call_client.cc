@@ -252,7 +252,9 @@ Call::Stats CallClient::GetStats() {
   SendTask([this, &stats] { stats = call_->GetStats(); });
   return stats;
 }
-
+uint32_t CallClient::last_bandwidth_bps(){
+	return call_->last_bandwidth_bps();
+}
 DataRate CallClient::target_rate() const {
   return network_controller_factory_.GetUpdate().target_rate->target_rate;
 }
