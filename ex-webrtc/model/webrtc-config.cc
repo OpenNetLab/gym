@@ -32,28 +32,39 @@ WebrtcSessionManager::~WebrtcSessionManager(){
         call_client_config_.transport.cc_factory=nullptr;
         delete cc_factory;
     }
+    if(m_running){
+        Stop();
+    }
+    if(sender_client_){
+        delete sender_client_;
+        sender_client_=nullptr;
+    }
+    if(receiver_client_){
+        delete receiver_client_;
+        receiver_client_=nullptr;
+    }
 }
 void WebrtcSessionManager::CreateClients(){
     sender_client_=new CallClient(time_controller_.get(),nullptr,call_client_config_);
     receiver_client_=new CallClient(time_controller_.get(),nullptr,call_client_config_);
 }
-CallClient* WebrtcSessionManager::GetSenderClient(){
-    return sender_client_;
+void WebrtcSessionManager::RegisterSenderTransport(TransportBase *transport,bool own){
+    if(sender_client_){
+        sender_client_->SetCustomTransport(transport,own);
+    }
 }
-CallClient* WebrtcSessionManager::GetReceiverClient(){
-    return receiver_client_; 
-}
-void WebrtcSessionManager::RegisterSenderTransport(NetworkNodeTransport *transport,bool own){
-    sender_client_->SetCustomTransport(transport,own);
-}
-void WebrtcSessionManager::RegisterReceiverTransport(NetworkNodeTransport *transport,bool own){
-    receiver_client_->SetCustomTransport(transport,own);
+void WebrtcSessionManager::RegisterReceiverTransport(TransportBase *transport,bool own){
+    if(receiver_client_){
+        receiver_client_->SetCustomTransport(transport,own);
+    }
+    
 }
 void WebrtcSessionManager::CreateStreamPair(){
       video_streams_.emplace_back(
       new VideoStreamPair2(sender_client_,receiver_client_, video_stream_config_));
 }
 void WebrtcSessionManager::Start(){
+  m_running=true;
   for (auto& stream_pair : video_streams_)
     stream_pair->receive()->Start();
   for (auto& stream_pair : video_streams_) {
@@ -63,6 +74,7 @@ void WebrtcSessionManager::Start(){
   }
 }
 void WebrtcSessionManager::Stop(){
+  m_running=false;
   for (auto& stream_pair : video_streams_) {
     stream_pair->send()->Stop();
   }

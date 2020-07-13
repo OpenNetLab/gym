@@ -216,7 +216,8 @@ CallClient::CallClient(
     call_.reset(CreateCall(time_controller_, event_log_.get(), config,
                            &network_controller_factory_,
                            fake_audio_setup_.audio_state));
-    transport_ = std::make_unique<NetworkNodeTransport>(clock_, call_.get());
+    transport_ = std::make_unique<NetworkNodeTransport>();
+    transport_->Construct(clock_, call_.get());
   });
 }
 
@@ -320,7 +321,7 @@ void CallClient::AddExtensions(std::vector<RtpExtension> extensions) {
 void CallClient::SendTask(std::function<void()> task) {
   task_queue_.SendTask(std::move(task), RTC_FROM_HERE);
 }
-void CallClient::SetCustomTransport(NetworkNodeTransport *transport,bool own){
+void CallClient::SetCustomTransport(TransportBase *transport,bool own){
     SendTask([&, transport,own] {
     if(!own_transport_&&transport_){
         transport_.release();

@@ -9,12 +9,19 @@
 #include "ns3/traffic-control-module.h"
 #include "ns3/log.h"
 #include "ns3/ex-webrtc-module.h"
+
+#include <deque>
 using namespace ns3;
+using namespace std;
 NS_LOG_COMPONENT_DEFINE ("Webrtc-Static");
+const uint32_t TOPO_DEFAULT_BW     = 3000000;  
+const uint32_t TOPO_DEFAULT_PDELAY =100;
+const uint32_t TOPO_DEFAULT_QDELAY =300;
 const uint32_t DEFAULT_PACKET_SIZE = 1500;
 static NodeContainer BuildExampleTopo (uint64_t bps,
                                        uint32_t msDelay,
-                                       uint32_t msQdelay)
+                                       uint32_t msQdelay,
+                                       bool enable_random_loss)
 {
     NodeContainer nodes;
     nodes.Create (2);
@@ -39,38 +46,75 @@ static NodeContainer BuildExampleTopo (uint64_t bps,
     // enable tc in ns3.30
     //TrafficControlHelper tch;
     //tch.Uninstall (devices);
-/*
+    if(enable_random_loss){
     std::string errorModelType = "ns3::RateErrorModel";
     ObjectFactory factory;
     factory.SetTypeId (errorModelType);
     Ptr<ErrorModel> em = factory.Create<ErrorModel> ();
-    devices.Get (1)->SetAttribute ("ReceiveErrorModel", PointerValue (em));
-    */
+    devices.Get (1)->SetAttribute ("ReceiveErrorModel", PointerValue (em));		
+    }
     return nodes;
 }
-static double simDuration=1;
+static void InstallWebrtcApplication( Ptr<Node> sender,
+                        Ptr<Node> receiver,
+						uint16_t send_port,
+                        uint16_t recv_port,
+                        float startTime,
+                        float stopTime,webrtc::test::WebrtcSessionManager *manager)
+{
+    Ptr<WebrtcSender> sendApp = CreateObject<WebrtcSender> (manager);
+	Ptr<WebrtcReceiver> recvApp = CreateObject<WebrtcReceiver>(manager);
+   	sender->AddApplication (sendApp);
+    receiver->AddApplication (recvApp);
+    sendApp->Bind(send_port);
+    recvApp->Bind(recv_port);
+    Ptr<Ipv4> ipv4 = receiver->GetObject<Ipv4> ();
+	Ipv4Address addr = ipv4->GetAddress (1, 0).GetLocal ();
+	sendApp->ConfigurePeer(addr,recv_port);
+    ipv4=sender->GetObject<Ipv4> ();
+    addr=ipv4->GetAddress (1, 0).GetLocal ();
+    recvApp->ConfigurePeer(addr,send_port);
+    sendApp->SetStartTime (Seconds (startTime));
+    sendApp->SetStopTime (Seconds (stopTime));
+    recvApp->SetStartTime (Seconds (startTime));
+    recvApp->SetStopTime (Seconds (stopTime));	
+}
+static float simDuration=1;
+float appStart=0.1;
+float appStop=simDuration;
 int main(int argc, char *argv[]){
-    LogComponentEnable("WebrtcTag",LOG_LEVEL_ALL);
+    LogComponentEnable("WebrtcSender",LOG_LEVEL_ALL);
+    LogComponentEnable("WebrtcReceiver",LOG_LEVEL_ALL);
     GlobalValue::Bind ("SimulatorImplementationType", StringValue ("ns3::RealtimeSimulatorImpl"));
     init_webrtc_log();
-    //set_test_clock_webrtc();
-    uint32_t ns3_last=Simulator::Now().GetMilliSeconds();
-    uint32_t webrtc_last=webrtc_time_millis();
+    set_test_clock_webrtc();
+	uint64_t linkBw   = TOPO_DEFAULT_BW;
+    uint32_t msDelay  = TOPO_DEFAULT_PDELAY;
+    uint32_t msQDelay = TOPO_DEFAULT_QDELAY;
+    bool enable_random_loss=false;
+    uint16_t sendPort=5432;
+    uint16_t recvPort=5000;
+    
+    std::unique_ptr<webrtc::test::WebrtcSessionManager> webrtc_manaager(new webrtc::test::WebrtcSessionManager());
+    webrtc_manaager->SetFrameHxW(720,1280);
+    uint32_t min_rate=300;
+    uint32_t start_rate=500;
+    uint32_t max_rate=linkBw/1000;
+    webrtc_manaager->SetRate(min_rate,start_rate,max_rate);
+    webrtc_manaager->CreateClients();
+    NodeContainer nodes = BuildExampleTopo(linkBw, msDelay, msQDelay,enable_random_loss);
+
+    
+    
+    InstallWebrtcApplication(nodes.Get(0),nodes.Get(1),sendPort,recvPort,appStart,appStop,webrtc_manaager.get());
+    sendPort++;
+    recvPort++;
+    
+    
+    
     Simulator::Stop (Seconds(simDuration));
     Simulator::Run ();
-    uint32_t ns3_time=Simulator::Now().GetMilliSeconds();
-    uint32_t webrtc_time=webrtc_time_millis();
-    std::cout<<ns3_time-ns3_last<<" "<<webrtc_time-webrtc_last<<std::endl;
-    std::cout<<webrtc_last<<std::endl;
-    test_match_active();
     Simulator::Destroy();
-    Ptr<Packet> sent=Create<Packet>(0);
-    WebrtcTag tag1;
-    tag1.SetData(WebrtcTag::RTCP,1234,4321);
-    sent->AddPacketTag(tag1);
-    Ptr<Packet> recv=sent->Copy();
-    WebrtcTag tag2;
-    recv->RemovePacketTag(tag2);
-    std::cout<<"seq "<<tag2.GetSeq()<<" "<<tag2.GetSentTime()<<std::endl;
+
     return 0;
 }

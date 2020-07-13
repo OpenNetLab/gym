@@ -6,7 +6,9 @@ def build(bld):
     module.env.append_value('CXXFLAGS', '-DWEBRTC_POSIX')
     module.source = [
     'model/webrtc-config.cc',
-    'model/webrtclog.cc', 
+    'model/webrtclog.cc',
+    'model/webrtc-receiver.cc',
+    'model/webrtc-sender.cc', 
     'model/webrtc-tag.cc',    
     'model/webrtc-util.cc',
     'api/test/create_frame_generator.cc',
@@ -42,10 +44,13 @@ def build(bld):
     ]
     headers = bld(features='ns3header')
     headers.module = 'ex-webrtc'
-    headers.source = [      
+    headers.source = [
+    'model/atomic-lock.h',    
     'model/webrtc-config.h',
     'model/webrtc-defines.h',
-    'model/webrtclog.h',  
+    'model/webrtclog.h',
+    'model/webrtc-receiver.h',
+    'model/webrtc-sender.h',     
     'model/webrtc-tag.h', 
     'model/webrtc-util.h',
 	]
