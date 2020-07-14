@@ -37,11 +37,13 @@ void WebrtcReceiver::Bind(uint16_t port){
         NS_ASSERT (res == 0);
     }
     m_socket->SetRecvCallback (MakeCallback(&WebrtcReceiver::RecvPacket,this));
+    m_context=GetNode()->GetId ();
     NotifyRouteChange();    
 }
 bool WebrtcReceiver::SendRtp(const uint8_t* packet,
                size_t length,
                const webrtc::PacketOptions& options){
+    NS_ASSERT(length<1500&&length>0);
     int64_t send_time_ms = m_clock->TimeInMilliseconds();
     rtc::SentPacket sent_packet;
     sent_packet.packet_id = options.packet_id;
@@ -52,31 +54,23 @@ bool WebrtcReceiver::SendRtp(const uint8_t* packet,
     sent_packet.info.packet_type = rtc::PacketType::kData;
     m_call->OnSentPacket(sent_packet);
     {
-        WebrtcTag tag;
-        tag.SetData(WebrtcTag::RTP,m_seq,(uint32_t)send_time_ms);
-        m_seq++;
-        Ptr<Packet> p=Create<Packet>(packet,length);
-        //p->AddPacketTag(tag);
-        LockScope ls(&m_qLock);
-        m_dataQ.push_back(p);
+        rtc::CopyOnWriteBuffer buffer(packet,length);
+        LockScope ls(&m_rtpLock);
+        m_rtpQ.push_back(buffer);
     }
     if(m_running)
-    Simulator::ScheduleWithContext(GetNode()->GetId (), Time (0),MakeEvent(&WebrtcReceiver::DeliveryPacket, this));         
+    Simulator::ScheduleWithContext(m_context, Time (0),MakeEvent(&WebrtcReceiver::DeliveryPacket, this));         
     return true;               
 }
 bool WebrtcReceiver::SendRtcp(const uint8_t* packet, size_t length){
     {
-        uint32_t send_time_ms = m_clock->TimeInMilliseconds();
-        WebrtcTag tag;
-        tag.SetData(WebrtcTag::RTCP,m_seq,(uint32_t)send_time_ms);
-        m_seq++;
-        Ptr<Packet> p=Create<Packet>(packet,length);
-       // p->AddPacketTag(tag);
-        LockScope ls(&m_qLock);
-        m_dataQ.push_back(p);        
+        NS_ASSERT(length<1500&&length>0);
+        rtc::CopyOnWriteBuffer buffer(packet,length);
+        LockScope ls(&m_rtcpLock);
+        m_rtcpQ.push_back(buffer);        
     }
     if(m_running)
-    Simulator::ScheduleWithContext(GetNode()->GetId (), Time (0),MakeEvent(&WebrtcReceiver::DeliveryPacket, this)); 
+    Simulator::ScheduleWithContext(m_context, Time (0),MakeEvent(&WebrtcReceiver::DeliveryPacket, this)); 
     return true;
 }
 void WebrtcReceiver::StartApplication(){
@@ -98,18 +92,30 @@ void WebrtcReceiver::NotifyRouteChange(){
       kDummyTransportName, route);     
 }
 void WebrtcReceiver::DeliveryPacket(){
-    bool has_packet=false;
-    Ptr<Packet> packet;
+    std::deque<Ptr<Packet>> sendQ;
     {
-        LockScope ls(&m_qLock);
-        if(!m_dataQ.empty()){
-            packet=m_dataQ.front();
-            m_dataQ.pop_front();
-	    has_packet=true;
+        LockScope ls(&m_rtpLock);
+        while(!m_rtpQ.empty()){
+            rtc::CopyOnWriteBuffer buffer=m_rtpQ.front();
+            Ptr<Packet> packet=Create<Packet>(buffer.data(),buffer.size());
+            sendQ.push_back(packet);
+            m_rtpQ.pop_front();
         }
     }
-    if(has_packet){
-	SendToNetwork(packet);
+    {
+        LockScope ls(&m_rtcpLock);
+        while(!m_rtcpQ.empty()){
+            rtc::CopyOnWriteBuffer buffer=m_rtcpQ.front();
+            Ptr<Packet> packet=Create<Packet>(buffer.data(),buffer.size());
+            sendQ.push_back(packet);
+            m_rtcpQ.pop_front();
+	    
+        }        
+    }
+    while(!sendQ.empty()){
+        Ptr<Packet> packet=sendQ.front();
+        sendQ.pop_front();
+        SendToNetwork(packet);
     }
 }
 void WebrtcReceiver::SendToNetwork(Ptr<Packet> p){
@@ -117,7 +123,6 @@ void WebrtcReceiver::SendToNetwork(Ptr<Packet> p){
     m_socket->SendTo(p,0,InetSocketAddress{m_peerIp,m_peerPort});
 }
 void WebrtcReceiver::RecvPacket(Ptr<Socket> socket){
-    if(!m_running){return;}
     Address remoteAddr;
     auto packet = socket->RecvFrom (remoteAddr);
 	/*WebrtcTag tag;
@@ -127,6 +132,14 @@ void WebrtcReceiver::RecvPacket(Ptr<Socket> socket){
         m_maxSeenSeq=seq;
         NS_LOG_INFO("recv "<<seq);
     }*/
+    if(!m_knowPeer){
+        m_peerIp= InetSocketAddress::ConvertFrom (remoteAddr).GetIpv4 ();
+	    uint16_t port=m_peerPort;
+	    m_peerPort= InetSocketAddress::ConvertFrom (remoteAddr).GetPort ();
+		m_knowPeer=true;
+		NS_ASSERT(port==m_peerPort);
+	}
+    if(!m_running){return;}
     uint32_t recv=packet->GetSize();
     NS_ASSERT(recv<=1500);
     uint8_t buf[1500]={'\0'};

@@ -35,14 +35,18 @@ private:
     webrtc::Clock *m_clock;
     uint16_t m_bindPort;
     Ptr<Socket> m_socket;
+    bool m_knowPeer{false};
     Ipv4Address m_peerIp;
     uint16_t m_peerPort;
     webrtc::test::CallClient *m_client{nullptr};
     webrtc::Call* m_call{nullptr};
     uint32_t m_maxSeenSeq{0};
     uint32_t m_seq{1};
-    AtomicLock m_qLock;
-    std::deque<Ptr<Packet>> m_dataQ;
+    AtomicLock m_rtpLock;
+    std::deque<rtc::CopyOnWriteBuffer> m_rtpQ;
+    AtomicLock m_rtcpLock;
+    std::deque<rtc::CopyOnWriteBuffer> m_rtcpQ;
     uint32_t m_packetOverhead{0};
+    uint32_t m_context{0};
 };    
 }
