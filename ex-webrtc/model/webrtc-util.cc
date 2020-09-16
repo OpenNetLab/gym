@@ -61,6 +61,7 @@ void MyRealTimeController::AdvanceTime(TimeDelta duration) {
   main_thread_->ProcessMessages(duration.ms());
 }
 }  // namespace webrtc
+
 namespace ns3{
 namespace{
     static  bool webrtc_clock_init=false;

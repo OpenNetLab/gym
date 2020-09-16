@@ -7,7 +7,7 @@
  *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
-#include "test/scenario/video_stream2.h"
+#include "video_stream2.h"
 #include <algorithm>
 #include <memory>
 #include <utility>

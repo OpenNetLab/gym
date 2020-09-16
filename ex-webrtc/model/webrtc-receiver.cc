@@ -71,13 +71,19 @@ bool WebrtcReceiver::SendRtcp(const uint8_t* packet, size_t length){
     }
     if(m_running)
     Simulator::ScheduleWithContext(m_context, Time (0),MakeEvent(&WebrtcReceiver::DeliveryPacket, this)); 
+    
+    // NS_LOG_INFO("Receiver Send Rtcp.");
+
     return true;
 }
 void WebrtcReceiver::StartApplication(){
+    NS_LOG_INFO("Recv App Started");
     m_running=true;
 }
 void WebrtcReceiver::StopApplication(){
+    NS_LOG_INFO("Recv App Stopped");
     m_running=false;
+    m_manager->Stop();
 }
 void WebrtcReceiver::NotifyRouteChange(){
   rtc::NetworkRoute route;
@@ -123,6 +129,7 @@ void WebrtcReceiver::SendToNetwork(Ptr<Packet> p){
     m_socket->SendTo(p,0,InetSocketAddress{m_peerIp,m_peerPort});
 }
 void WebrtcReceiver::RecvPacket(Ptr<Socket> socket){
+    // NS_LOG_INFO("Receiver RecvPacket()");
     Address remoteAddr;
     auto packet = socket->RecvFrom (remoteAddr);
 	/*WebrtcTag tag;
@@ -146,6 +153,7 @@ void WebrtcReceiver::RecvPacket(Ptr<Socket> socket){
     packet->CopyData(buf,recv);
   if (!webrtc::RtpHeaderParser::IsRtcp(buf, recv)) {
     auto ssrc = webrtc::RtpHeaderParser::GetSsrc(buf, recv);
+    // NS_LOG_INFO(ssrc.value());
     //RTC_CHECK(ssrc.has_value());
     if(!ssrc.has_value()){
 	return;

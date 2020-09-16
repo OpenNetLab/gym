@@ -9,7 +9,7 @@
 #include "modules/utility/include/process_thread.h"
 #include "system_wrappers/include/clock.h"
 namespace webrtc{
-class MyRealTimeController:public TimeController{
+class MyRealTimeController:public webrtc::TimeController{
 public:
   MyRealTimeController();
 

@@ -11,7 +11,7 @@ public:
     virtual void Enter()=0;
     virtual void Leave()=0;
     virtual ~Lock(){}
-};
+}; 
 class AtomicLock:public Lock{
 public:
 	void Enter() override{

@@ -101,9 +101,11 @@ bool WebrtcSender::SendRtcp(const uint8_t* packet, size_t length){
     }
     if(m_running)
     Simulator::ScheduleWithContext(m_context, Time (0),MakeEvent(&WebrtcSender::DeliveryPacket, this)); 
+    // NS_LOG_INFO("Sender Send Rtcp.");
     return true;
 }
 void WebrtcSender::StartApplication(){
+    NS_LOG_INFO("Sender app started");
     m_running=true;
     /*uint32_t send_time_ms=Simulator::Now().GetMilliSeconds();
     WebrtcTag tag;
@@ -116,6 +118,7 @@ void WebrtcSender::StartApplication(){
     m_manager->Start();
 }
 void WebrtcSender::StopApplication(){
+    NS_LOG_INFO("Sender app stopped");
     m_running=false;
     m_manager->Stop();
 }
@@ -164,6 +167,7 @@ void WebrtcSender::SendToNetwork(Ptr<Packet> p){
     m_socket->SendTo(p,0,InetSocketAddress{m_peerIp,m_peerPort});
 }
 void WebrtcSender::RecvPacket(Ptr<Socket> socket){
+    // NS_LOG_INFO("Sender RecvPacket()");
     if(!m_running){return;}
     Address remoteAddr;
     auto packet = socket->RecvFrom (remoteAddr);
@@ -174,9 +178,10 @@ void WebrtcSender::RecvPacket(Ptr<Socket> socket){
     rtc::CopyOnWriteBuffer packet_data(buf,recv);
   if (!webrtc::RtpHeaderParser::IsRtcp(buf, recv)) {
     auto ssrc = webrtc::RtpHeaderParser::GetSsrc(buf, recv);
+    // NS_LOG_INFO(ssrc.value());
     if(!ssrc.has_value()){
-	NS_LOG_INFO("sender no ssrc");
-	return;
+        NS_LOG_INFO("sender no ssrc");
+        return;
     }
   } 
     webrtc::EmulatedIpPacket emu_packet(rtc::SocketAddress(), rtc::SocketAddress(), std::move(packet_data),
