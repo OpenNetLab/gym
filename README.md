@@ -21,10 +21,7 @@ Simulation for webrtc cc algorithm on ns-3.26
 2. Replace some source files
 
    ```sh
-   cp -rf test	/path/webrtc-src/
-   cp -rf call /path/webrtc-src/
-   cp -rf modules /path/webrtc-src/
-   cp -rf rtc_base /path/webrtc-src/
+   cp -rf src /path/
    cp -rf ex-webrtc/test /path/webrtc-src/
    ```
 
