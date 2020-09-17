@@ -21,8 +21,8 @@ Simulation for webrtc cc algorithm on ns-3.26
 2. Replace some source files
 
    ```sh
-   cp -rf src /path/
-   cp -rf ex-webrtc/test /path/webrtc-src/
+   cp -rf src /path/webrtc/
+   cp -rf ex-webrtc/test /path/webrtc/src
    ```
 
 3. Compile libwebrtc.a
