@@ -8,22 +8,25 @@
 #include "webrtc-util.h"
 #include "test/scenario/scenario_config.h"
 #include "test/scenario/video_frame_matcher.h"
-#include "network_state_estimator.h"
+#include "api/transport/network_control.h"
+#include "api/transport/network_types.h"
+
 namespace ns3{
 namespace{
 const uint32_t kInitialBitrateKbps = 60;
 const webrtc::DataRate kInitialBitrate = webrtc::DataRate::KilobitsPerSec(kInitialBitrateKbps);
 const float kDefaultPacingRate = 2.5f;    
 }
-WebrtcSessionManager::WebrtcSessionManager(){
+WebrtcSessionManager::WebrtcSessionManager(
+    std::unique_ptr<webrtc::NetworkStateEstimatorFactory> network_state_estimator_factory) 
+{
     call_client_config_.transport.rates.min_rate=kInitialBitrate;
     call_client_config_.transport.rates.max_rate=5*kInitialBitrate;
     call_client_config_.transport.rates.start_rate=kInitialBitrate;
     webrtc::GoogCcFactoryConfig config;
     config.feedback_only = true;
 
-    // You can comment out the line below to disable the bitrate control for webrtc, and GoogCc will be enabled.
-    config.network_state_estimator_factory = std::make_unique<webrtc::MyNetworkStateEstimatorFactory>();
+    config.network_state_estimator_factory = std::move(network_state_estimator_factory);
 
     call_client_config_.transport.cc_factory =
         new webrtc::GoogCcNetworkControllerFactory(std::move(config));

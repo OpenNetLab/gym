@@ -55,15 +55,23 @@ Simulation for webrtc cc algorithm on ns-3.26
    ./waf build
    ```
 
-7. Copy the webrtc sratch script `scratch/webrtc-static.cc` to `ns-3.26/scratch`, then you can run the script:
+7. Copy the webrtc sratch script `scratch/webrtc_test/*` to `ns-3.26/scratch/`, 
 
+   ```sh
+   cp -r scratch /path/to/ns-3.26/
    ```
-   ./waf --run "scratch/webrtc-static"
+
+8. Then you can run the script:
+
+   ```shell
+   ./waf --run webrtc_test
    ```
 
    and you can see the results in `ns-3.26/traces`.
 
+9. You can set your own CC model to control the bitrate in `my_network_estimator.cc`
 
+   
 
  ### What this project edits in source code
 
@@ -131,11 +139,15 @@ if (estimate_bounded_backoff_ && network_estimate_) {
 }
 ```
 
+
+
 ### Example results
+
 please refer to `./results/`
 
 Reference: 
 
 1. download webrtc(m84):  [instruction](https://mediasoup.org/documentation/v3/libmediasoupclient/installation/)
 2. Evaluate webrtc GCC congestion control on ns3: [link](https://blog.csdn.net/u010643777/article/details/107237315)
+
 
