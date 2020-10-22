@@ -7,6 +7,7 @@ public:
         RTP,
         RTCP,
     };
+
     static TypeId GetTypeId (void);
     virtual TypeId GetInstanceTypeId (void) const override;
     virtual uint32_t GetSerializedSize (void) const override;
@@ -18,6 +19,7 @@ public:
     void SetPacketType(PacketType type){
         m_type=(uint8_t)type;
     }
+
     PacketType GetPacketType() const{
         return (PacketType)m_type;
     }
@@ -33,9 +35,11 @@ public:
     uint32_t GetSentTime() const {
         return m_sentTime;
     }
+
 private:
     void WriteVarintNumber(TagBuffer& i, const void *value,uint32_t size) const;
     void ReadVarintNumber(TagBuffer& i, void *value,uint32_t size);
+    
     uint8_t m_type{RTP};
     uint32_t m_seq{0};
     uint32_t m_sentTime{0};

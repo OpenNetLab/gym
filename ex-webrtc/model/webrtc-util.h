@@ -28,6 +28,7 @@ public:
   const std::unique_ptr<rtc::Thread> main_thread_;    
 };
 }
+
 namespace ns3{
 class SimulationWebrtcClock:public rtc::ClockInterface{
 public:
@@ -35,10 +36,12 @@ public:
     int64_t TimeNanos() const override;
     ~SimulationWebrtcClock() override{}
 };
+
 void set_test_clock_webrtc();
 uint32_t webrtc_time32();
 int64_t webrtc_time_millis();
 int64_t webrtc_time_micros();
 int64_t webrtc_time_nanos();
 std::unique_ptr<webrtc::TimeController> CreateTimeController();
+
 }

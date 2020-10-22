@@ -3,6 +3,7 @@
 #if defined(COMPILER_MSVC)
 #include <stdlib.h>
 #endif
+
 namespace basic{
 #define ARCH_CPU_LITTLE_ENDIAN 1
 // Returns a value with all bytes in |x| swapped, i.e. reverses the endianness.
