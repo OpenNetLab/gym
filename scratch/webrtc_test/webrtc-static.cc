@@ -82,8 +82,9 @@ static void InstallWebrtcApplication( Ptr<Node> sender,
     ipv4=sender->GetObject<Ipv4> ();
     addr=ipv4->GetAddress (1, 0).GetLocal ();
     recvApp->ConfigurePeer(addr,send_port);
-    if(trace){
-        sendApp->SetBwTraceFuc(MakeCallback(&WebrtcTrace::OnBW,trace));
+    if (trace){
+        sendApp->SetBwTraceFuc(MakeCallback(&WebrtcTrace::OnBW, trace));
+        sendApp->SetRttTraceFuc(MakeCallback(&WebrtcTrace::OnRtt, trace));
     }
     sendApp->SetStartTime (Seconds (startTime));
     sendApp->SetStopTime (Seconds (stopTime));

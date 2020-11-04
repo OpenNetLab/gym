@@ -103,8 +103,8 @@ uint32_t WebrtcTag::GetSerializedSize (void) const {
 
 void WebrtcTag::Serialize (TagBuffer i) const {
     uint8_t public_flag = m_type<<kPacketTypeShift;
-    public_flag| = (GetNumberFlags(m_seq)<<kSequenceNumberShift);
-    public_flag| = (GetNumberFlags(m_sentTime)<<kTimeShift);
+    public_flag |= (GetNumberFlags(m_seq)<<kSequenceNumberShift);
+    public_flag |= (GetNumberFlags(m_sentTime)<<kTimeShift);
     i.WriteU8(public_flag);
     uint32_t seq_length = GetNumberLength(m_seq);
     uint32_t time_length = GetNumberLength(m_sentTime);

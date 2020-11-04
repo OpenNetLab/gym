@@ -51,7 +51,6 @@ def build(bld):
     'test/testsupport/file_utils.cc',
     'test/testsupport/file_utils_override.cc',
     'test/testsupport/ivf_video_frame_generator.cc',
-    'model/network_state_estimator.cc'
     ]
     headers = bld(features='ns3header')
     headers.module = 'ex-webrtc'
@@ -66,6 +65,5 @@ def build(bld):
     'model/webrtc-trace.h',     
     'model/webrtc-util.h',
     # 'test/scenario/video_stream2.h',
-    'model/network_state_estimator.h'
 	]
     module.use.append("libwebrtc")

@@ -56,14 +56,18 @@ void WebrtcSender::SetBwTraceFuc(TraceBandwidth cb){
     m_traceBw = cb;
 }
 
+void WebrtcSender::SetRttTraceFuc(TraceRtt cb) {
+    m_traceRtt = cb;
+}
+
 bool WebrtcSender::SendRtp(const uint8_t* packet,
                           size_t length,
                           const webrtc::PacketOptions& options){
     if(length == 0){
-      NS_LOG_INFO("0 packet");
+        NS_LOG_INFO("0 packet");
 	    return true;
     }
-    NS_ASSERT(length<1500&&length>0);
+    NS_ASSERT(length<1500 && length>0);
     int64_t send_time_ms = m_clock->TimeInMilliseconds();
     rtc::SentPacket sent_packet;
     sent_packet.packet_id = options.packet_id;
@@ -88,9 +92,22 @@ bool WebrtcSender::SendRtp(const uint8_t* packet,
         m_lastTraceTime = now;
         output = true;
     }
-    if (output&&!m_traceBw.IsNull()) {
-        uint32_t bw = m_call->last_bandwidth_bps();
-        m_traceBw(now, bw);
+    if (output) {
+        // Todo(kangjx)
+        // Replace it with GetStats()
+        // We can even replace it with client->target_rate().kbps(), same way as in GoogCcUnitTest
+        // We can also get other stats such as :
+        //      send_bandwidth_bps & max_padding_bitrate_bps & recv_bandwidth_bps & pacer_delay_ms & rtt_ms
+        // And we can print all the info using Call::Stats::ToString()
+        // uint32_t bw = m_call->last_bandwidth_bps();
+        Call::Stats stats = m_call->GetStats();
+
+        if (!m_traceBw.IsNull()) {
+            m_traceBw(now, stats.recv_bandwidth_bps);
+        }
+        if (!m_traceRtt.IsNull()) {
+            m_traceRtt(now, stats.rtt_ms)
+        }
     }
     if(m_running) {
         Simulator::ScheduleWithContext(m_context, Time (0), MakeEvent(&WebrtcSender::DeliveryPacket, this));     
@@ -106,8 +123,9 @@ bool WebrtcSender::SendRtcp(const uint8_t* packet, size_t length){
         LockScope ls(&m_rtcpLock);
         m_rtcpQ.push_back(buffer);        
     }
-    if(m_running)
-    Simulator::ScheduleWithContext(m_context, Time (0), MakeEvent(&WebrtcSender::DeliveryPacket, this)); 
+    if(m_running) {
+        Simulator::ScheduleWithContext(m_context, Time (0), MakeEvent(&WebrtcSender::DeliveryPacket, this)); 
+    }
 
     return true;
 }
@@ -156,7 +174,6 @@ void WebrtcSender::DeliveryPacket(){
             Ptr<Packet> packet = Create<Packet>(buffer.data(), buffer.size());
             sendQ.push_back(packet);
             m_rtcpQ.pop_front();
-	    
         }        
     }
     while(!sendQ.empty()){

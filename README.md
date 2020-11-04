@@ -6,7 +6,15 @@ Simulation for webrtc cc algorithm on ns-3.26
 
 ### Setup Guide
 
-1. get webrtc(version: m84) code
+1. ns3.26 installation
+
+   ```sh
+   git clone https://gitlab.com/nsnam/ns-3-allinone.git
+   cd ns-3-allinone
+    ./download.py -n ns-3.26
+   ```
+   
+2. get webrtc(version: m84) code
 
    ```sh
    mkdir webrtc-checkout
@@ -18,14 +26,15 @@ Simulation for webrtc cc algorithm on ns-3.26
    gclient sync
    ```
 
-2. Replace some source files
+3. Replace some source files from this repo
 
    ```sh
    cp -rf src /path/webrtc/
    cp -rf ex-webrtc/test /path/webrtc/src
+   cp -rf ex-webrtc /path/to/ns-3.26
    ```
 
-3. Compile libwebrtc.a
+4. Compile libwebrtc.a
 
    ```sh
    gn gen out/m84 --args='is_debug=false is_component_build=false is_clang=false rtc_include_tests=false rtc_use_h264=true rtc_enable_protobuf=false use_rtti=true use_custom_libcxx=false treat_warnings_as_errors=false use_ozone=true'
@@ -34,9 +43,9 @@ Simulation for webrtc cc algorithm on ns-3.26
 
    then we'll get `src/out/m84/obj/libwebrtc.a`
 
-4. Copy the ex-webrtc module to `ns-3.26/src`.
+5. Copy the ex-webrtc module to `ns-3.26/src`.
 
-5. Edit path to libwebrtc in `ns-3.26/src/ex-webrtc/wscript`
+6. Edit path to libwebrtc in `ns-3.26/src/ex-webrtc/wscript`
 
    ```python
    webrtc_lib_path = '/home/kangjie/webrtc/src/out/m84/obj'
@@ -44,7 +53,7 @@ Simulation for webrtc cc algorithm on ns-3.26
    webrtc_absl_path = webrtc_code_path + '/third_party/abseil-cpp'
    ```
 
-6. Build ns project.
+7. Build ns project.
 
    ```sh
    //add  
@@ -55,13 +64,13 @@ Simulation for webrtc cc algorithm on ns-3.26
    ./waf build
    ```
 
-7. Copy the webrtc sratch script `scratch/webrtc_test/*` to `ns-3.26/scratch/`, 
+8. Copy the webrtc sratch script `scratch/webrtc_test/*` to `ns-3.26/scratch/`, 
 
    ```sh
    cp -r scratch /path/to/ns-3.26/
    ```
 
-8. Then you can run the script:
+9. Then you can run the script:
 
    ```shell
    ./waf --run webrtc_test
@@ -69,9 +78,9 @@ Simulation for webrtc cc algorithm on ns-3.26
 
    and you can see the results in `ns-3.26/traces`.
 
-9. You can set your own CC model to control the bitrate in `my_network_estimator.cc`
+10. You can set your own CC model to control the bitrate in `my_network_estimator.cc`
 
-   
+    
 
  ### What this project edits in source code
 

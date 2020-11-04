@@ -13,7 +13,7 @@ namespace{
     constexpr char kDummyTransportName[] = "dummy";
 }
 
-WebrtcReceiver::WebrtcReceiver(WebrtcSessionManager *manager} {
+WebrtcReceiver::WebrtcReceiver(WebrtcSessionManager *manager) {
     m_manager = manager;
     m_clock = manager->time_controller_->GetClock();
     m_manager->RegisterReceiverTransport(this, false);
@@ -23,7 +23,7 @@ WebrtcReceiver::WebrtcReceiver(WebrtcSessionManager *manager} {
 
 WebrtcReceiver::~WebrtcReceiver() {}
 
-InetSocketAddress WebrtcReceiver::GetLocalAddress(} {
+InetSocketAddress WebrtcReceiver::GetLocalAddress() {
     Ptr<Node> node = GetNode();
     Ptr<Ipv4> ipv4 = node->GetObject<Ipv4> ();
     Ipv4Address local_ip = ipv4->GetAddress (1, 0).GetLocal ();
@@ -31,12 +31,12 @@ InetSocketAddress WebrtcReceiver::GetLocalAddress(} {
     return InetSocketAddress{local_ip, m_bindPort};    
 }
 
-void WebrtcReceiver::ConfigurePeer(Ipv4Address addr, uint16_t port} {
+void WebrtcReceiver::ConfigurePeer(Ipv4Address addr, uint16_t port) {
     m_peerIp = addr;
     m_peerPort = port;    
 }
 
-void WebrtcReceiver::Bind(uint16_t port} {
+void WebrtcReceiver::Bind(uint16_t port) {
     m_bindPort = port;
     if (m_socket == NULL) {
         m_socket = Socket::CreateSocket (GetNode(), UdpSocketFactory::GetTypeId ());
@@ -51,7 +51,7 @@ void WebrtcReceiver::Bind(uint16_t port} {
 
 bool WebrtcReceiver::SendRtp(const uint8_t* packet,
                size_t length,
-               const webrtc::PacketOptions& options} {
+               const webrtc::PacketOptions& options) {
     NS_ASSERT(length<1500&&length>0);
     int64_t send_time_ms = m_clock->TimeInMilliseconds();
     rtc::SentPacket sent_packet;
@@ -74,7 +74,7 @@ bool WebrtcReceiver::SendRtp(const uint8_t* packet,
     return true;               
 }
 
-bool WebrtcReceiver::SendRtcp(const uint8_t* packet, size_t length} {
+bool WebrtcReceiver::SendRtcp(const uint8_t* packet, size_t length) {
     {
         NS_ASSERT(length<1500 && length>0);
         rtc::CopyOnWriteBuffer buffer(packet, length);
@@ -87,18 +87,18 @@ bool WebrtcReceiver::SendRtcp(const uint8_t* packet, size_t length} {
     return true;
 }
 
-void WebrtcReceiver::StartApplication(} {
+void WebrtcReceiver::StartApplication() {
     NS_LOG_INFO("Recv App Started");
     m_running = true;
 }
 
-void WebrtcReceiver::StopApplication(} {
+void WebrtcReceiver::StopApplication() {
     NS_LOG_INFO("Recv App Stopped");
     m_running = false;
     m_manager->Stop();
 }
 
-void WebrtcReceiver::NotifyRouteChange(} {
+void WebrtcReceiver::NotifyRouteChange() {
     rtc::NetworkRoute route;
     route.connected = true;
     // We assume that the address will be unique in the lower bytes.
@@ -110,11 +110,11 @@ void WebrtcReceiver::NotifyRouteChange(} {
     m_call->GetTransportControllerSend()->OnNetworkRouteChanged(kDummyTransportName, route);     
 }
 
-void WebrtcReceiver::DeliveryPacket(} {
+void WebrtcReceiver::DeliveryPacket() {
     std::deque<Ptr<Packet>> sendQ;
     {
         LockScope ls(&m_rtpLock);
-        while(!m_rtpQ.empty()} {
+        while(!m_rtpQ.empty()) {
             rtc::CopyOnWriteBuffer buffer = m_rtpQ.front();
             Ptr<Packet> packet = Create<Packet>(buffer.data(), buffer.size());
             sendQ.push_back(packet);
@@ -123,26 +123,26 @@ void WebrtcReceiver::DeliveryPacket(} {
     }
     {
         LockScope ls(&m_rtcpLock);
-        while(!m_rtcpQ.empty()} {
+        while(!m_rtcpQ.empty()) {
             rtc::CopyOnWriteBuffer buffer = m_rtcpQ.front();
             Ptr<Packet> packet = Create<Packet>(buffer.data(), buffer.size());
             sendQ.push_back(packet);
             m_rtcpQ.pop_front();
         }        
     }
-    while(!sendQ.empty()} {
+    while(!sendQ.empty()) {
         Ptr<Packet> packet = sendQ.front();
         sendQ.pop_front();
         SendToNetwork(packet);
     }
 }
 
-void WebrtcReceiver::SendToNetwork(Ptr<Packet> p} {
+void WebrtcReceiver::SendToNetwork(Ptr<Packet> p) {
     NS_ASSERT(p->GetSize()>0);
     m_socket->SendTo(p, 0, InetSocketAddress{m_peerIp, m_peerPort});
 }
 
-void WebrtcReceiver::RecvPacket(Ptr<Socket> socket} {
+void WebrtcReceiver::RecvPacket(Ptr<Socket> socket) {
     Address remoteAddr;
     auto packet = socket->RecvFrom(remoteAddr);
     if (!m_knowPeer) {
@@ -159,7 +159,7 @@ void WebrtcReceiver::RecvPacket(Ptr<Socket> socket} {
     packet->CopyData(buf, recv);
     if (!webrtc::RtpHeaderParser::IsRtcp(buf, recv)) {
         auto ssrc = webrtc::RtpHeaderParser::GetSsrc(buf, recv);
-        if (!ssrc.has_value()} {
+        if (!ssrc.has_value()) {
             return;
         }
     }    
