@@ -93,20 +93,13 @@ bool WebrtcSender::SendRtp(const uint8_t* packet,
         output = true;
     }
     if (output) {
-        // Todo(kangjx)
-        // Replace it with GetStats()
-        // We can even replace it with client->target_rate().kbps(), same way as in GoogCcUnitTest
-        // We can also get other stats such as :
-        //      send_bandwidth_bps & max_padding_bitrate_bps & recv_bandwidth_bps & pacer_delay_ms & rtt_ms
-        // And we can print all the info using Call::Stats::ToString()
-        // uint32_t bw = m_call->last_bandwidth_bps();
         Call::Stats stats = m_call->GetStats();
-
+        NS_LOG_INFO(stats.ToString(now));
         if (!m_traceBw.IsNull()) {
-            m_traceBw(now, stats.recv_bandwidth_bps);
+            m_traceBw(now, stats.send_bandwidth_bps);
         }
         if (!m_traceRtt.IsNull()) {
-            m_traceRtt(now, stats.rtt_ms)
+            m_traceRtt(now, stats.rtt_ms);
         }
     }
     if(m_running) {

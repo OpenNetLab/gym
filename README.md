@@ -53,17 +53,27 @@ Simulation for webrtc cc algorithm on ns-3.26
    webrtc_absl_path = webrtc_code_path + '/third_party/abseil-cpp'
    ```
 
+   Set the default c++ version in `ns-3.26/src/ex-webrtc/wscript`
+
+   ```c++
+   # Enable C++-11 support
+   env.append_value('CXXFLAGS', '-std=c++11')
+     
+   # Change to 
+   # Enable C++-14 support
+   env.append_value('CXXFLAGS', '-std=c++14')
+   ```
+
 7. Build ns project.
 
    ```sh
-   //add  
    export WEBRTC_INC=/home/kangjie/webrtc/src  
    export ABSL_INC=/home/kangjie/webrtc/src/third_party/abseil-cpp  
    export CPLUS_INCLUDE_PATH=CPLUS_INCLUDE_PATH:$WEBRTC_INC:$ABSL_INC
    CXXFLAGS="-Wno-error" ./waf configure --enable-static
    ./waf build
    ```
-
+   
 8. Copy the webrtc sratch script `scratch/webrtc_test/*` to `ns-3.26/scratch/`, 
 
    ```sh
