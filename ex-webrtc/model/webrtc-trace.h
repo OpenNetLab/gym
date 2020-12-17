@@ -13,8 +13,8 @@ enum WebrtcTraceEnable:uint8_t{
 	WebrtcTrace(){};
 	~WebrtcTrace();
     void Log(std::string &s,uint8_t enable);
-    void OnBW(uint32_t now, uint32_t bps);
-	void OnRTT(uint32_t now, int64_t rtt);
+    void OnBw(uint32_t now, uint32_t bps);
+	void OnRtt(uint32_t now, int64_t rtt);
 private:
 	void Close();
 	void OpenTraceRttFile(std::string &name);

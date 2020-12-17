@@ -13,7 +13,7 @@ Simulation for webrtc cc algorithm on ns-3.26
    cd ns-3-allinone
     ./download.py -n ns-3.26
    ```
-   
+
 2. get webrtc(version: m84) code
 
    ```sh
@@ -53,7 +53,7 @@ Simulation for webrtc cc algorithm on ns-3.26
    webrtc_absl_path = webrtc_code_path + '/third_party/abseil-cpp'
    ```
 
-   Set the default c++ version in `ns-3.26/src/ex-webrtc/wscript`
+   Set the default c++ version in `ns-3.26/wscript` or you can directly replace it with `global-script` in this repo.
 
    ```c++
    # Enable C++-11 support
@@ -73,7 +73,7 @@ Simulation for webrtc cc algorithm on ns-3.26
    CXXFLAGS="-Wno-error" ./waf configure --enable-static
    ./waf build
    ```
-   
+
 8. Copy the webrtc sratch script `scratch/webrtc_test/*` to `ns-3.26/scratch/`, 
 
    ```sh
@@ -168,5 +168,4 @@ Reference:
 
 1. download webrtc(m84):  [instruction](https://mediasoup.org/documentation/v3/libmediasoupclient/installation/)
 2. Evaluate webrtc GCC congestion control on ns3: [link](https://blog.csdn.net/u010643777/article/details/107237315)
-
 

@@ -83,7 +83,7 @@ static void InstallWebrtcApplication( Ptr<Node> sender,
     addr=ipv4->GetAddress (1, 0).GetLocal ();
     recvApp->ConfigurePeer(addr,send_port);
     if (trace){
-        sendApp->SetBwTraceFuc(MakeCallback(&WebrtcTrace::OnBW, trace));
+        sendApp->SetBwTraceFuc(MakeCallback(&WebrtcTrace::OnBw, trace));
         sendApp->SetRttTraceFuc(MakeCallback(&WebrtcTrace::OnRtt, trace));
     }
     sendApp->SetStartTime (Seconds (startTime));
@@ -92,7 +92,7 @@ static void InstallWebrtcApplication( Ptr<Node> sender,
     recvApp->SetStopTime (Seconds (stopTime));	
 }
 
-static float simDuration    = 300;
+static float simDuration    = 30;
 float appStart              = 0.1;
 float appStop = simDuration - 1;
 

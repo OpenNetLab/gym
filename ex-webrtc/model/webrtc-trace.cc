@@ -17,27 +17,27 @@ void WebrtcTrace::Log(std::string &s,uint8_t enable){
     }
 }
 
-void WebrtcTrace::OnRTT(
+void WebrtcTrace::OnRtt(
 	uint32_t now, 
 	int64_t rtt) {
 	char line [256];
 	memset(line,0,256);
 	if(m_rtt.is_open()) {
 		float time = float(now)/1000;
-		sprintf (line, "%f %16d",
+		sprintf (line, "%f %16ld",
 				time, rtt);
 		m_rtt <<line<<std::endl;
 	}
 }
 
-void WebrtcTrace::OnBW(uint32_t now, uint32_t bps){
+void WebrtcTrace::OnBw(uint32_t now, uint32_t bps){
 	char line [256];
 	memset(line,0,256);
 	if(m_bw.is_open()){
 		float time=float(now)/1000;
         float kbps=float(bps)/1000;
 		sprintf (line, "%f %16f",
-				time,kbps);
+				time, kbps);
 		m_bw<<line<<std::endl;
 	}    
 }

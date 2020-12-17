@@ -1,5 +1,5 @@
-webrtc_lib_path = '/home/kangjie/webrtc/src/out/m84/obj'
-webrtc_code_path = '/home/kangjie/webrtc/src'
+webrtc_lib_path = '/home/kangjie/m84/src/out/m84/obj'
+webrtc_code_path = '/home/kangjie/m84/src'
 webrtc_absl_path = webrtc_code_path + '/third_party/abseil-cpp'
 
 def configure(conf):
@@ -51,6 +51,7 @@ def build(bld):
     'test/testsupport/file_utils.cc',
     'test/testsupport/file_utils_override.cc',
     'test/testsupport/ivf_video_frame_generator.cc',
+    # 'model/network_state_estimator.cc'
     ]
     headers = bld(features='ns3header')
     headers.module = 'ex-webrtc'
@@ -65,5 +66,6 @@ def build(bld):
     'model/webrtc-trace.h',     
     'model/webrtc-util.h',
     # 'test/scenario/video_stream2.h',
+    # 'model/network_state_estimator.h'
 	]
     module.use.append("libwebrtc")
