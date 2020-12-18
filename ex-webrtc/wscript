@@ -1,6 +1,8 @@
-webrtc_lib_path = '/home/kangjie/m84/src/out/m84/obj'
-webrtc_code_path = '/home/kangjie/m84/src'
-webrtc_absl_path = webrtc_code_path + '/third_party/abseil-cpp'
+from os.path import join, expanduser
+
+webrtc_code_path = join(expanduser('~'), 'webrtc_checkout', 'src')
+webrtc_lib_path = join(webrtc_code_path, 'out', 'm84', 'obj')
+webrtc_absl_path = join(webrtc_code_path, 'third_party', 'abseil-cpp')
 
 def configure(conf):
   conf.env['ENABLE_webrtc']= conf.check(mandatory=True, libpath=[webrtc_lib_path], includes=[webrtc_code_path], lib='webrtc', uselib_store='libwebrtc')
