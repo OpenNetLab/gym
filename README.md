@@ -43,27 +43,17 @@ Simulation for webrtc cc algorithm on ns-3.26
 
    then we'll get `src/out/m84/obj/libwebrtc.a`
 
-5. Copy the ex-webrtc module to `ns-3.26/src`.
-
-6. Edit path to libwebrtc in `ns-3.26/src/ex-webrtc/wscript`
-
-   ```python
-   webrtc_lib_path = '/home/kangjie/webrtc/src/out/m84/obj'
-   webrtc_code_path = '/home/kangjie/webrtc/src'
-   webrtc_absl_path = webrtc_code_path + '/third_party/abseil-cpp'
-   ```
-
-   Set the default c++ version in `ns-3.26/wscript` or you can directly replace it with `global-script` in this repo.
+6. Set the default c++ version in `ns-3.26/wscript` or you can directly replace it with `global-script` in this repo.
 
    ```c++
    # Enable C++-11 support
    env.append_value('CXXFLAGS', '-std=c++11')
      
    # Change to 
-   # Enable C++-14 support
+# Enable C++-14 support
    env.append_value('CXXFLAGS', '-std=c++14')
-   ```
-
+```
+   
 7. Build ns project.
 
    ```sh
@@ -168,4 +158,5 @@ Reference:
 
 1. download webrtc(m84):  [instruction](https://mediasoup.org/documentation/v3/libmediasoupclient/installation/)
 2. Evaluate webrtc GCC congestion control on ns3: [link](https://blog.csdn.net/u010643777/article/details/107237315)
+
 
