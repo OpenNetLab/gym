@@ -6,17 +6,32 @@ Simulation for webrtc cc algorithm on ns-3.26
 
 ### Setup Guide
 
-1. ns3.26 installation
+1. Clone the repo
 
    ```sh
+   export WORKDIR=$(pwd)
+   git clone https://github.com/middaywords/webrtc-gcc-ns3
+   ```
+
+   
+
+2. ns3.26 installation
+
+   ```sh
+   cd $WORKDIR
    git clone https://gitlab.com/nsnam/ns-3-allinone.git
    cd ns-3-allinone
     ./download.py -n ns-3.26
+   cd ns-3.26
+   export NS_DIR=$(pwd)
    ```
 
-2. get webrtc(version: m84) code
+   Then we can see  directory, `ns3.26` is our working directory.
+
+3. get webrtc(version: m84) code
 
    ```sh
+   cd $WORKDIR
    mkdir webrtc-checkout
    cd webrtc-checkout
    fetch --nohooks webrtc
@@ -24,42 +39,49 @@ Simulation for webrtc cc algorithm on ns-3.26
    cd src
    git checkout -b m84 refs/remotes/branch-heads/4147
    gclient sync
+   export WEBRTC_DIR=$(pwd)
    ```
 
-3. Replace some source files from this repo
+4. Replace some source files from this repo 
 
    ```sh
-   cp -rf src /path/webrtc/
-   cp -rf ex-webrtc/test /path/webrtc/src
-   cp -rf ex-webrtc /path/to/ns-3.26
+   cd $WORKDIR/webrtc-gcc-ns3
+   cp -rf src $WEBRTC_DIR/../src
+   cp -rf ex-webrtc/test $WEBRTC_DIR
+   cp -rf ex-webrtc $NS_DIR/src/
    ```
 
-4. Compile libwebrtc.a
+5. Compile libwebrtc.a 
 
    ```sh
+   cd $WEBRTC_DIR
    gn gen out/m84 --args='is_debug=false is_component_build=false is_clang=false rtc_include_tests=false rtc_use_h264=true rtc_enable_protobuf=false use_rtti=true use_custom_libcxx=false treat_warnings_as_errors=false use_ozone=true'
    ninja -C out/m84
    ```
 
-   then we'll get `src/out/m84/obj/libwebrtc.a`
+   then we'll get `$WEBRTC_DIR/out/m84/obj/libwebrtc.a`
 
-6. Set the default c++ version in `ns-3.26/wscript` or you can directly replace it with `global-script` in this repo.
+6. Set the default c++ version in `$NS_DIR/wscript` or you can directly replace it with `global-script` in this repo.
+
+   ```sh
+   cd $NS_DIR
+   vi wscript
+   ```
 
    ```c++
    # Enable C++-11 support
    env.append_value('CXXFLAGS', '-std=c++11')
-     
+    
+   # Enable C++-14 support
    # Change to 
-# Enable C++-14 support
    env.append_value('CXXFLAGS', '-std=c++14')
-```
-   
-7. Build ns project.
+   ```
+
+7. Build ns project
 
    ```sh
-   export WEBRTC_INC=/home/kangjie/webrtc/src  
-   export ABSL_INC=/home/kangjie/webrtc/src/third_party/abseil-cpp  
-   export CPLUS_INCLUDE_PATH=CPLUS_INCLUDE_PATH:$WEBRTC_INC:$ABSL_INC
+   cd $NS_DIR
+   export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$WEBRTC_DIR:$WEBRTC_DIR/third_party/abseil-cpp
    CXXFLAGS="-Wno-error" ./waf configure --enable-static
    ./waf build
    ```
@@ -67,20 +89,26 @@ Simulation for webrtc cc algorithm on ns-3.26
 8. Copy the webrtc sratch script `scratch/webrtc_test/*` to `ns-3.26/scratch/`, 
 
    ```sh
+   cd $WORKDIR/webrtc-gcc-ns3
    cp -r scratch /path/to/ns-3.26/
    ```
 
 9. Then you can run the script:
 
    ```shell
+   cd $NS_DIR
+   mkdir traces
    ./waf --run webrtc_test
    ```
 
-   and you can see the results in `ns-3.26/traces`.
+   You can see the results in `ns-3.26/traces`. And you can compare the results with the plots in `./results/`
 
 10. You can set your own CC model to control the bitrate in `my_network_estimator.cc`
 
     
+
+
+​    
 
  ### What this project edits in source code
 
@@ -150,9 +178,7 @@ if (estimate_bounded_backoff_ && network_estimate_) {
 
 
 
-### Example results
 
-please refer to `./results/`
 
 Reference: 
 
