@@ -1,0 +1,3 @@
+[submodule "webrtc-checkout/src"]
+	path = webrtc-checkout/src
+	url = https://webrtc.googlesource.com/src
