@@ -37,8 +37,7 @@ static NodeContainer BuildExampleTopo (uint64_t bps,
     pointToPoint.SetChannelAttribute ("Delay", TimeValue (MilliSeconds (msDelay)));
     auto bufSize = std::max<uint32_t> (DEFAULT_PACKET_SIZE, bps * msQdelay / 8000);
     pointToPoint.SetQueue ("ns3::DropTailQueue",
-                           "Mode", StringValue ("QUEUE_MODE_BYTES"),
-                           "MaxBytes", UintegerValue (bufSize));
+                           "MaxSize", QueueSizeValue (QueueSize (QueueSizeUnit::BYTES, bufSize)));
 
     NetDeviceContainer devices = pointToPoint.Install (nodes);
 
