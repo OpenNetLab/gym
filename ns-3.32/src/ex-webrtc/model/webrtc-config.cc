@@ -72,7 +72,7 @@ void WebrtcSessionManager::RegisterReceiverTransport(webrtc::test::TransportBase
 
 void WebrtcSessionManager::CreateStreamPair() {
       video_streams_.emplace_back(
-      new webrtc::test::VideoStreamPair2(sender_client_,receiver_client_, video_stream_config_));
+      new webrtc::test::VideoStreamPair(sender_client_,receiver_client_, video_stream_config_));
 }
 
 void WebrtcSessionManager::Start() {

@@ -10,7 +10,7 @@
 #include "api/transport/goog_cc_factory.h"
 #include "test/scenario/network_node.h"
 #include "test/scenario/call_client.h"
-#include "test/scenario/video_stream2.h"
+#include "test/scenario/video_stream.h"
 #include "test/scenario/transport_base.h"
 namespace ns3{
 class WebrtcSessionManager{
@@ -36,8 +36,8 @@ private:
     void Start();
     void Stop();
     bool m_running{false};
-    
-    std::vector<std::unique_ptr<webrtc::test::VideoStreamPair2>> video_streams_;
+
+    std::vector<std::unique_ptr<webrtc::test::VideoStreamPair>> video_streams_;
 };
 
 void test_match_active();   

@@ -1,3 +1,4 @@
-[submodule "webrtc-checkout/src"]
-	path = webrtc-checkout/src
-	url = https://webrtc.googlesource.com/src
+[submodule "AlphaRTC"]
+    path = AlphaRTC
+    url = https://github.com/OpenNetLab/AlphaRTC.git
+    branch = gym
