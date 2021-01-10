@@ -1,0 +1,33 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - "*"
+
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+
+steps:
+- checkout: self
+
+- script: make init
+  displayName: 'Build environment'
+
+- script: make sync
+  displayName: 'Sync dependencies'
+
+- script: make gym
+  displayName: 'Build gym'
+
+- script: mkdir -p traces && target/webrtc_test
+  displayName: 'Execute gym'
+
+- publish: $(System.DefaultWorkingDirectory)/target
+  artifact: alphartc-gym
+  displayName: "Archive alphartc gym"
