@@ -9,7 +9,7 @@
 #include "modules/utility/include/process_thread.h"
 #include "system_wrappers/include/clock.h"
 namespace webrtc{
-class MyRealTimeController:public webrtc::TimeController{
+class MyRealTimeController:public TimeController{
 public:
   MyRealTimeController();
 
@@ -25,7 +25,7 @@ public:
 
  private:
   const std::unique_ptr<TaskQueueFactory> task_queue_factory_;
-  const std::unique_ptr<rtc::Thread> main_thread_;    
+  const std::unique_ptr<rtc::Thread> main_thread_;
 };
 }
 

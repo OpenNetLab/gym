@@ -7,7 +7,7 @@
 #include "system_wrappers/include/sleep.h"
 
 namespace webrtc {
-    
+
 namespace {
 class MainThread : public rtc::Thread {
 public:
@@ -102,6 +102,6 @@ int64_t webrtc_time_nanos(){
 
 std::unique_ptr<webrtc::TimeController> CreateTimeController(){
     return std::make_unique<webrtc::MyRealTimeController>();
-}  
+}
 
 }

@@ -11,18 +11,20 @@ public:
     virtual void Enter()=0;
     virtual void Leave()=0;
     virtual ~Lock(){}
-}; 
+};
+
 class AtomicLock:public Lock{
 public:
-	void Enter() override{
-		atomic_lock(&lock_);
-	}
-	void Leave() override{
-		atomic_unlock(&lock_);
-	}
+    void Enter() override{
+        atomic_lock(&lock_);
+    }
+    void Leave() override{
+        atomic_unlock(&lock_);
+    }
 private:
-	int lock_{0};
+    int lock_{0};
 };
+
 class LockScope{
 public:
     explicit LockScope(Lock *lock):lock_(lock){

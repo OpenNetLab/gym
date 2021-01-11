@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include <deque>
 #include "ns3/event-id.h"
 #include "ns3/callback.h"
@@ -34,8 +34,8 @@ public:
   bool SendRtcp(const uint8_t* packet, size_t length) override;
 
 private:
-	virtual void StartApplication() override;
-	virtual void StopApplication() override;
+    virtual void StartApplication() override;
+    virtual void StopApplication() override;
   void NotifyRouteChange();
   void DeliveryPacket();
   void SendToNetwork(Ptr<Packet> p);
@@ -63,6 +63,6 @@ private:
   uint32_t m_packetOverhead{0};
   uint32_t m_initial_time{0};
   uint32_t m_context{0};
-};   
+};
 
 }

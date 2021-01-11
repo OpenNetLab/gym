@@ -13,7 +13,7 @@ public:
     virtual uint32_t GetSerializedSize (void) const override;
     virtual void Serialize (TagBuffer i) const override;
     virtual void Deserialize (TagBuffer i) override;
-    virtual void Print (std::ostream &os) const override; 
+    virtual void Print (std::ostream &os) const override;
     void SetData(PacketType type,uint32_t seq,uint32_t sent_ts);
     void GetData(PacketType &type,uint32_t &seq,uint32_t &sent_ts);
     void SetPacketType(PacketType type){
@@ -39,9 +39,9 @@ public:
 private:
     void WriteVarintNumber(TagBuffer& i, const void *value,uint32_t size) const;
     void ReadVarintNumber(TagBuffer& i, void *value,uint32_t size);
-    
+
     uint8_t m_type{RTP};
     uint32_t m_seq{0};
     uint32_t m_sentTime{0};
-};    
+};
 }

@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <memory>
 
@@ -9,11 +9,11 @@
 
 namespace webrtc {
 
-// This class is for rate control, you can add your model 
+// This class is for rate control, you can add your model
 // to control the WebRTC sending bitrate.
 class MyNetworkStateEstimator : public NetworkStateEstimator {
  public:
-  MyNetworkStateEstimator(int data_rate); 
+  MyNetworkStateEstimator(int data_rate);
   // Gets the current best estimate according to the estimator.
   absl::optional<NetworkStateEstimate> GetCurrentEstimate() override;
   // Called with per packet feedback regarding receive time.

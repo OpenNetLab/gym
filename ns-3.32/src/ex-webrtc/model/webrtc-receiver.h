@@ -1,5 +1,5 @@
 #pragma once
-#include <deque> 
+#include <deque>
 #include "ns3/event-id.h"
 #include "ns3/callback.h"
 #include "ns3/application.h"
@@ -25,11 +25,11 @@ public:
   bool SendRtp(const uint8_t* packet,
                size_t length,
                const webrtc::PacketOptions& options) override;
-  bool SendRtcp(const uint8_t* packet, size_t length) override; 
+  bool SendRtcp(const uint8_t* packet, size_t length) override;
 
 private:
-	virtual void StartApplication() override;
-	virtual void StopApplication() override;
+    virtual void StartApplication() override;
+    virtual void StopApplication() override;
   void NotifyRouteChange();
   void DeliveryPacket();
   void SendToNetwork(Ptr<Packet> p);
@@ -53,6 +53,6 @@ private:
   std::deque<rtc::CopyOnWriteBuffer> m_rtcpQ;
   uint32_t m_packetOverhead{0};
   uint32_t m_context{0};
-};    
+};
 
 }

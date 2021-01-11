@@ -68,7 +68,7 @@ uint8_t GetNumberFlags(uint32_t value){
         return FLAGS_3BYTE;
         case SEQ_4BYTE:
         return FLAGS_4BYTE;
-    }   
+    }
 }
 
 const uint8_t kTimeShift  =  0;
@@ -90,12 +90,12 @@ TypeId WebrtcTag::GetTypeId (void){
                                     MakeUintegerAccessor (&WebrtcTag::GetSeq),
                                     MakeUintegerChecker<uint32_t> ());
 
-   return tid;    
+   return tid;
 }
 
 TypeId WebrtcTag::GetInstanceTypeId (void) const {
     return GetTypeId ();
-} 
+}
 
 uint32_t WebrtcTag::GetSerializedSize (void) const {
     return 1+GetNumberLength(m_seq)+GetNumberLength(m_sentTime);
@@ -131,7 +131,7 @@ void WebrtcTag::Deserialize (TagBuffer i){
 }
 
 void WebrtcTag::Print (std::ostream &os) const {
-    
+
 }
 
 void WebrtcTag::SetData(PacketType type,uint32_t seq,uint32_t sent_ts){

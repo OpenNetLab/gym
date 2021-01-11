@@ -29,5 +29,6 @@ steps:
   displayName: 'Execute gym'
 
 - publish: $(System.DefaultWorkingDirectory)/target
+  continueOnError: true
   artifact: alphartc-gym
   displayName: "Archive alphartc gym"

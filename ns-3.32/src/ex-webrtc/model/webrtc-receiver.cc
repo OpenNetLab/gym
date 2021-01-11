@@ -28,12 +28,12 @@ InetSocketAddress WebrtcReceiver::GetLocalAddress() {
     Ptr<Ipv4> ipv4 = node->GetObject<Ipv4> ();
     Ipv4Address local_ip = ipv4->GetAddress (1, 0).GetLocal ();
 
-    return InetSocketAddress{local_ip, m_bindPort};    
+    return InetSocketAddress{local_ip, m_bindPort};
 }
 
 void WebrtcReceiver::ConfigurePeer(Ipv4Address addr, uint16_t port) {
     m_peerIp = addr;
-    m_peerPort = port;    
+    m_peerPort = port;
 }
 
 void WebrtcReceiver::Bind(uint16_t port) {
@@ -46,7 +46,7 @@ void WebrtcReceiver::Bind(uint16_t port) {
     }
     m_socket->SetRecvCallback(MakeCallback(&WebrtcReceiver::RecvPacket, this));
     m_context = GetNode()->GetId ();
-    NotifyRouteChange();    
+    NotifyRouteChange();
 }
 
 bool WebrtcReceiver::SendRtp(const uint8_t* packet,
@@ -68,10 +68,10 @@ bool WebrtcReceiver::SendRtp(const uint8_t* packet,
         m_rtpQ.push_back(buffer);
     }
     if (m_running) {
-        Simulator::ScheduleWithContext(m_context, Time (0), MakeEvent(&WebrtcReceiver::DeliveryPacket, this));         
+        Simulator::ScheduleWithContext(m_context, Time (0), MakeEvent(&WebrtcReceiver::DeliveryPacket, this));
     }
 
-    return true;               
+    return true;
 }
 
 bool WebrtcReceiver::SendRtcp(const uint8_t* packet, size_t length) {
@@ -79,10 +79,10 @@ bool WebrtcReceiver::SendRtcp(const uint8_t* packet, size_t length) {
         NS_ASSERT(length<1500 && length>0);
         rtc::CopyOnWriteBuffer buffer(packet, length);
         LockScope ls(&m_rtcpLock);
-        m_rtcpQ.push_back(buffer);        
+        m_rtcpQ.push_back(buffer);
     }
     if (m_running)
-    Simulator::ScheduleWithContext(m_context, Time (0), MakeEvent(&WebrtcReceiver::DeliveryPacket, this)); 
+    Simulator::ScheduleWithContext(m_context, Time (0), MakeEvent(&WebrtcReceiver::DeliveryPacket, this));
 
     return true;
 }
@@ -95,7 +95,6 @@ void WebrtcReceiver::StartApplication() {
 void WebrtcReceiver::StopApplication() {
     NS_LOG_INFO("Recv App Stopped");
     m_running = false;
-    m_manager->Stop();
 }
 
 void WebrtcReceiver::NotifyRouteChange() {
@@ -106,8 +105,8 @@ void WebrtcReceiver::NotifyRouteChange() {
     route.remote = rtc::RouteEndpoint::CreateWithNetworkId(static_cast<uint16_t>(4321));
     m_packetOverhead = webrtc::test::PacketOverhead::kDefault +
                             kIpv4HeaderSize+cricket::kUdpHeaderSize;
-    route.packet_overhead = m_packetOverhead;                         
-    m_call->GetTransportControllerSend()->OnNetworkRouteChanged(kDummyTransportName, route);     
+    route.packet_overhead = m_packetOverhead;
+    m_call->GetTransportControllerSend()->OnNetworkRouteChanged(kDummyTransportName, route);
 }
 
 void WebrtcReceiver::DeliveryPacket() {
@@ -128,7 +127,7 @@ void WebrtcReceiver::DeliveryPacket() {
             Ptr<Packet> packet = Create<Packet>(buffer.data(), buffer.size());
             sendQ.push_back(packet);
             m_rtcpQ.pop_front();
-        }        
+        }
     }
     while(!sendQ.empty()) {
         Ptr<Packet> packet = sendQ.front();
@@ -147,11 +146,11 @@ void WebrtcReceiver::RecvPacket(Ptr<Socket> socket) {
     auto packet = socket->RecvFrom(remoteAddr);
     if (!m_knowPeer) {
         m_peerIp = InetSocketAddress::ConvertFrom(remoteAddr).GetIpv4 ();
-	    uint16_t port = m_peerPort;
-	    m_peerPort = InetSocketAddress::ConvertFrom(remoteAddr).GetPort ();
-		m_knowPeer = true;
-		NS_ASSERT(port == m_peerPort);
-	}
+        uint16_t port = m_peerPort;
+        m_peerPort = InetSocketAddress::ConvertFrom(remoteAddr).GetPort ();
+        m_knowPeer = true;
+        NS_ASSERT(port == m_peerPort);
+    }
     if (!m_running) { return; }
     uint32_t recv = packet->GetSize();
     NS_ASSERT(recv <= 1500);
@@ -162,11 +161,11 @@ void WebrtcReceiver::RecvPacket(Ptr<Socket> socket) {
         if (!ssrc.has_value()) {
             return;
         }
-    }    
+    }
     rtc::CopyOnWriteBuffer packet_data(buf, recv);
     webrtc::EmulatedIpPacket emu_packet(rtc::SocketAddress(), rtc::SocketAddress(), std::move(packet_data),
                           m_clock->CurrentTime(), m_packetOverhead);
-    m_client->OnPacketReceived(std::move(emu_packet));     
+    m_client->OnPacketReceived(std::move(emu_packet));
 }
 
 }

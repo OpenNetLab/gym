@@ -16,11 +16,11 @@ namespace ns3{
 namespace{
 const uint32_t kInitialBitrateKbps = 60;
 const webrtc::DataRate kInitialBitrate = webrtc::DataRate::KilobitsPerSec(kInitialBitrateKbps);
-const float kDefaultPacingRate = 2.5f;    
+const float kDefaultPacingRate = 2.5f;
 }
 
 WebrtcSessionManager::WebrtcSessionManager(
-    std::unique_ptr<webrtc::NetworkStateEstimatorFactory> network_state_estimator_factory) 
+    std::unique_ptr<webrtc::NetworkStateEstimatorFactory> network_state_estimator_factory)
 {
     call_client_config_.transport.rates.min_rate = kInitialBitrate;
     call_client_config_.transport.rates.max_rate = 5*kInitialBitrate;
@@ -36,20 +36,20 @@ WebrtcSessionManager::~WebrtcSessionManager() {
     webrtc::NetworkControllerFactoryInterface *cc_factory = call_client_config_.transport.cc_factory;
     if (cc_factory) {
         call_client_config_.transport.cc_factory = nullptr;
-        // delete cc_factory;
+        delete cc_factory;
     }
     if (m_running) {
         Stop();
     }
+    video_streams_.clear();
     if (sender_client_) {
-        // delete sender_client_;
+        delete sender_client_;
         sender_client_ = nullptr;
     }
     if (receiver_client_) {
-        // delete receiver_client_;
+        delete receiver_client_;
         receiver_client_ = nullptr;
     }
-    video_streams_.clear();
 }
 
 void WebrtcSessionManager::CreateClients() {
@@ -67,7 +67,7 @@ void WebrtcSessionManager::RegisterReceiverTransport(webrtc::test::TransportBase
     if (receiver_client_) {
         receiver_client_->SetCustomTransport(transport,own);
     }
-    
+
 }
 
 void WebrtcSessionManager::CreateStreamPair() {
@@ -94,20 +94,20 @@ void WebrtcSessionManager::Stop() {
         stream_pair->send()->Stop();
     }
     for (auto& stream_pair : video_streams_) {
-        stream_pair->receive()->Stop(); 
+        stream_pair->receive()->Stop();
     }
 }
 
 void WebrtcSessionManager::SetFrameHxW(uint32_t height,uint32_t width) {
     video_stream_config_.source.generator.width = width;
-    video_stream_config_.source.generator.height = height;    
+    video_stream_config_.source.generator.height = height;
 }
 
 void WebrtcSessionManager::SetRate(uint32_t min_rate,uint32_t start_rate,uint32_t max_rate) {
     call_client_config_.transport.rates.min_rate = webrtc::DataRate::KilobitsPerSec(min_rate);
     call_client_config_.transport.rates.max_rate = webrtc::DataRate::KilobitsPerSec(max_rate);
     call_client_config_.transport.rates.start_rate = webrtc::DataRate::KilobitsPerSec(start_rate);
-}    
+}
 
 void test_match_active() {
     webrtc::test::VideoStreamConfig config = webrtc::test::VideoStreamConfig();
