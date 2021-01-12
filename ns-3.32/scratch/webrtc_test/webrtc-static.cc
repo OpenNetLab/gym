@@ -104,6 +104,7 @@ static NodeContainer BuildExampleTopo (uint64_t bps,
     }
     return nodes;
 }
+
 static void InstallWebrtcApplication( Ptr<Node> sender,
                         Ptr<Node> receiver,
                         uint16_t send_port,
@@ -173,23 +174,14 @@ int main(int argc, char *argv[]){
     uint16_t sendPort=5432;
     uint16_t recvPort=5000;
 
-    std::unique_ptr<WebrtcSessionManager> webrtc_manager(new WebrtcSessionManager(std::make_unique<webrtc::MyNetworkStateEstimatorFactory>()));
     uint32_t min_rate=300;
     uint32_t start_rate=500;
     uint32_t max_rate=linkBw/1000;
+
+    std::unique_ptr<WebrtcSessionManager> webrtc_manager(new WebrtcSessionManager(std::make_unique<webrtc::MyNetworkStateEstimatorFactory>()));
     webrtc_manager->SetFrameHxW(720,1280);
     webrtc_manager->SetRate(min_rate,start_rate,max_rate);
     webrtc_manager->CreateClients();
-
-    std::unique_ptr<WebrtcSessionManager> webrtc_manager2(new WebrtcSessionManager());
-    std::unique_ptr<WebrtcSessionManager> webrtc_manager3(new WebrtcSessionManager());
-    webrtc_manager2->SetFrameHxW(720,1280);
-    webrtc_manager2->SetRate(min_rate,start_rate,max_rate);
-    webrtc_manager2->CreateClients();
-
-    webrtc_manager3->SetFrameHxW(720,1280);
-    webrtc_manager3->SetRate(min_rate,start_rate,max_rate);
-    webrtc_manager3->CreateClients();
 
     NodeContainer nodes = BuildExampleTopo(linkBw, msDelay, msQDelay,enable_random_loss);
 
@@ -209,36 +201,6 @@ int main(int argc, char *argv[]){
     recvPort++;
     test_pair++;
 
-    log=instance+webrtc_log_com+std::to_string(test_pair);
-    WebrtcTrace trace2;
-    trace2.Log(log,WebrtcTrace::E_WEBRTC_BW);
-    InstallWebrtcApplication(nodes.Get(0),
-                            nodes.Get(1),
-                            sendPort,
-                            recvPort,
-                            appStart+20,
-                            appStop,
-                            webrtc_manager2.get(),
-                            &trace2);
-    sendPort++;
-    recvPort++;
-    test_pair++;
-
-    log=instance+webrtc_log_com+std::to_string(test_pair);
-    WebrtcTrace trace3;
-    trace3.Log(log,WebrtcTrace::E_WEBRTC_BW);
-    InstallWebrtcApplication(nodes.Get(0),
-                            nodes.Get(1),
-                            sendPort,
-                            recvPort,
-                            appStart+40,
-                            appStop,
-                            webrtc_manager3.get(),
-                            &trace3);
-    sendPort++;
-    recvPort++;
-    test_pair++;
-   
     Ptr<NetDevice> netDevice=nodes.Get(1)->GetDevice(0);
     ChangeBw change(netDevice);
     change.Start();
