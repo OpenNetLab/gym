@@ -16,10 +16,12 @@ def configure(conf):
       'dl'],
     uselib_store = 'libwebrtc')
   conf.env.append_value("CXXFLAGS", [
-    "-Wno-error",
     "-std=c++14",
     "-I" + webrtc_code_path,
-    "-I" + webrtc_absl_path])
+    "-I" + webrtc_absl_path,
+    "-Wno-unused-const-variable",
+    "-Wno-unused-private-field",
+    ])
 
 def build(bld):
     module= bld.create_ns3_module('ex-webrtc')

@@ -65,7 +65,9 @@ gym:
 	mkdir -p $(target_dir)
 	docker run $(docker_flags) $(compile_docker) \
 		bash -c \
-		" $(docker_ns_dir)/waf configure --enable-static --build-profile=$(build_profile); \
+		" $(docker_ns_dir)/waf configure --enable-static \
+		--check-cxx-compiler=clang++ --check-c-compiler=clang \
+		--build-profile=$(build_profile); \
 		$(docker_ns_dir)/waf build; \
 		cp $(docker_ns_dir)/build/scratch/webrtc_test/webrtc_test $(docker_target_dir)/ \
 		"

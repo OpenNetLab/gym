@@ -1,8 +1,8 @@
 FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y \
-    git python3 libglib2.0-dev build-essential \
-    libgtest-dev
+    sudo git python3 libglib2.0-dev build-essential \
+    libgtest-dev clang
 
 # Add ONL user
 ARG USER=onl

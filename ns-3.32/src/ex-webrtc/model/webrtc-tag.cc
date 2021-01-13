@@ -50,7 +50,10 @@ uint8_t GetNumberLength(uint32_t value){
         return SEQ_2BYTE;
     }else if(value<(UINT64_C(1)<<(SEQ_3BYTE*8))){
         return SEQ_3BYTE;
-    }else if(value<(UINT64_C(1)<<(SEQ_4BYTE*8))){
+    // }else if(value<(UINT64_C(1)<<(SEQ_4BYTE*8))){
+    // result of comparison of constant 4294967296 
+    // with expression of type 'uint32_t' (aka 'unsigned int') is always true
+    }else{
         return SEQ_4BYTE;
     }
     return 0;
@@ -69,6 +72,8 @@ uint8_t GetNumberFlags(uint32_t value){
         case SEQ_4BYTE:
         return FLAGS_4BYTE;
     }
+    NS_ASSERT("Wrong number flags");
+    return -1;
 }
 
 const uint8_t kTimeShift  =  0;
