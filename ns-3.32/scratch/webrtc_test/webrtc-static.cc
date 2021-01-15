@@ -1,6 +1,11 @@
+#include "network_estimator_proxy.h"
+#include "network_controller_proxy_factory.h"
+#include "gym_connector.h"
+
 #include <iostream>
 #include <string>
 #include <deque>
+
 #include "ns3/webrtc-defines.h"
 #include "ns3/core-module.h"
 #include "ns3/applications-module.h"
@@ -12,8 +17,6 @@
 #include "ns3/log.h"
 #include "ns3/ex-webrtc-module.h"
 
-#include "my_network_estimator.h"
-
 using namespace ns3;
 using namespace std;
 
@@ -23,7 +26,7 @@ const uint32_t TOPO_DEFAULT_BW     = 3000000;
 const uint32_t TOPO_DEFAULT_PDELAY =100;
 const uint32_t TOPO_DEFAULT_QDELAY =300;
 const uint32_t DEFAULT_PACKET_SIZE = 1000;
-const static uint32_t RATE_ARRAY[]= { 3000000 };
+const static uint32_t RATE_ARRAY[]= { 3000000, 500000, 1500000, 500000, 2000000 };
 
 // This class changes the rate of the bandwidth in a Round-Robin fashion
 // I.e., at second t, the rate will be adjusted to RATE_ARRAY[((t/m_gap)-1)%m_total]
@@ -116,7 +119,7 @@ static void InstallWebrtcApplication( Ptr<Node> sender,
 {
     Ptr<WebrtcSender> sendApp = CreateObject<WebrtcSender> (manager);
     Ptr<WebrtcReceiver> recvApp = CreateObject<WebrtcReceiver>(manager);
-       sender->AddApplication (sendApp);
+    sender->AddApplication (sendApp);
     receiver->AddApplication (recvApp);
     sendApp->Bind(send_port);
     recvApp->Bind(recv_port);
@@ -174,11 +177,14 @@ int main(int argc, char *argv[]){
     uint16_t sendPort=5432;
     uint16_t recvPort=5000;
 
-    uint32_t min_rate=300;
+    uint32_t min_rate=0;
     uint32_t start_rate=500;
     uint32_t max_rate=linkBw/1000;
 
-    std::unique_ptr<WebrtcSessionManager> webrtc_manager(new WebrtcSessionManager(std::make_unique<webrtc::MyNetworkStateEstimatorFactory>()));
+    GymConnector conn;
+    conn.SetBandwidth(10000000);
+    auto cc_factory = std::make_shared<NetworkControllerProxyFactory>(conn);
+    auto webrtc_manager = std::make_unique<WebrtcSessionManager>(cc_factory);
     webrtc_manager->SetFrameHxW(720,1280);
     webrtc_manager->SetRate(min_rate,start_rate,max_rate);
     webrtc_manager->CreateClients();
@@ -204,6 +210,10 @@ int main(int argc, char *argv[]){
     Ptr<NetDevice> netDevice=nodes.Get(1)->GetDevice(0);
     ChangeBw change(netDevice);
     change.Start();
+
+    Ptr<NetDevice> netDevice2=nodes.Get(0)->GetDevice(0);
+    ChangeBw change2(netDevice2);
+    change2.Start();
 
     Simulator::Stop (Seconds(simDuration));
     Simulator::Run ();

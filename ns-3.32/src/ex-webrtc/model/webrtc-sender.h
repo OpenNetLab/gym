@@ -34,8 +34,8 @@ public:
   bool SendRtcp(const uint8_t* packet, size_t length) override;
 
 private:
-    virtual void StartApplication() override;
-    virtual void StopApplication() override;
+  virtual void StartApplication() override;
+  virtual void StopApplication() override;
   void NotifyRouteChange();
   void DeliveryPacket();
   void SendToNetwork(Ptr<Packet> p);

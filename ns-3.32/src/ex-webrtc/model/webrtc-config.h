@@ -15,7 +15,7 @@
 namespace ns3{
 class WebrtcSessionManager{
 public:
-    WebrtcSessionManager(std::unique_ptr<webrtc::NetworkStateEstimatorFactory> network_state_estimator_factory = nullptr);
+    WebrtcSessionManager(std::shared_ptr<webrtc::NetworkControllerFactoryInterface> cc_factory = nullptr);
     ~WebrtcSessionManager();
     void SetFrameHxW(uint32_t height,uint32_t width);
     void SetRate(uint32_t min_rate,uint32_t start_rate,uint32_t max_rate);

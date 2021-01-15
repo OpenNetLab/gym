@@ -19,7 +19,6 @@ If you want to build the debug version, try `make gym build_profile=debug`
 #### Execute Gym
 
 ```sh
-# Execute following commands under gym/target
 mkdir -p traces
 target/webrtc_test
 ```
