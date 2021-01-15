@@ -182,7 +182,7 @@ int main(int argc, char *argv[]){
     uint32_t max_rate=linkBw/1000;
 
     GymConnector conn;
-    conn.SetBandwidth(10000000);
+    conn.SetBandwidth(1000000);
     auto cc_factory = std::make_shared<NetworkControllerProxyFactory>(conn);
     auto webrtc_manager = std::make_unique<WebrtcSessionManager>(cc_factory);
     webrtc_manager->SetFrameHxW(720,1280);
