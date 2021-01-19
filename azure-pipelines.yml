@@ -22,9 +22,6 @@ steps:
 - script: make sync
   displayName: 'Sync dependencies'
 
-- script: make configure
-  displayName: 'Configure gym'
-
 - script: make gym
   displayName: 'Build gym'
 

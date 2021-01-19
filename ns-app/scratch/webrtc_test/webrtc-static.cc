@@ -1,6 +1,6 @@
-#include "network_estimator_proxy.h"
-#include "network_controller_proxy_factory.h"
 #include "gym_connector.h"
+#include "network_estimator_proxy_factory.h"
+#include "network_controller_proxy_factory.h"
 
 #include <iostream>
 #include <string>
@@ -181,10 +181,15 @@ int main(int argc, char *argv[]){
     uint32_t start_rate=500;
     uint32_t max_rate=linkBw/1000;
 
-    GymConnector conn;
-    conn.SetBandwidth(1000000);
-    auto cc_factory = std::make_shared<NetworkControllerProxyFactory>(conn);
-    auto webrtc_manager = std::make_unique<WebrtcSessionManager>(cc_factory);
+    GymConnector gym_conn;
+    gym_conn.SetBandwidth(1000000);
+    auto cc_factory = std::make_shared<NetworkControllerProxyFactory>(gym_conn);
+    auto se_factory = std::make_shared<NetworkStateEstimatorProxyFactory>(gym_conn);
+    // webrtc::GoogCcFactoryConfig config;
+    // config.feedback_only = true;
+    // config.network_state_estimator_factory = std::make_unique<NetworkStateEstimatorProxyFactory>();
+    // auto cc_factory = std::make_shared<webrtc::GoogCcNetworkControllerFactory>(std::move(config));
+    auto webrtc_manager = std::make_unique<WebrtcSessionManager>(cc_factory, se_factory);
     webrtc_manager->SetFrameHxW(720,1280);
     webrtc_manager->SetRate(min_rate,start_rate,max_rate);
     webrtc_manager->CreateClients();
@@ -218,6 +223,12 @@ int main(int argc, char *argv[]){
     Simulator::Stop (Seconds(simDuration));
     Simulator::Run ();
     Simulator::Destroy();
+
+    auto stats = gym_conn.ConsumeStates();
+    for (auto &s : stats) {
+      std::cout << s << std::endl;
+    }
+
     std::cout<<"Simulation ends."<<std::endl;
     return 0;
 }

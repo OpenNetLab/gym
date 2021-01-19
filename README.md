@@ -11,8 +11,7 @@ git clone https://github.com/Pterosaur/alphartc-ns3.git gym
 cd gym
 make init
 make sync
-make configure # build_profile=debug
-make gym
+make gym # build_profile=debug
 ```
 
 If you want to build the debug version, try `make gym build_profile=debug`
