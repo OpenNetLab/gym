@@ -48,6 +48,10 @@ void WebrtcSender::Bind(uint16_t port){
     NotifyRouteChange();
 }
 
+uint16_t WebrtcSender::GetBindPort() const {
+    return m_bindPort;
+}
+
 void WebrtcSender::ConfigurePeer(Ipv4Address addr, uint16_t port){
     m_peerIp = addr;
     m_peerPort = port;
@@ -79,9 +83,9 @@ bool WebrtcSender::SendRtp(const uint8_t* packet,
     sent_packet.info.packet_type = rtc::PacketType::kData;
     m_call->OnSentPacket(sent_packet);
     {
-        rtc::CopyOnWriteBuffer buffer(packet, length);
+        rtc::Buffer buffer(packet, length);
         LockScope ls(&m_rtpLock);
-        m_rtpQ.push_back(buffer);
+        m_rtpQ.push_back(std::move(buffer));
     }
     bool output = false;
     uint32_t now = Simulator::Now().GetMilliSeconds();
@@ -94,17 +98,17 @@ bool WebrtcSender::SendRtp(const uint8_t* packet,
         output = true;
     }
     if (output) {
-        webrtc::Call::Stats stats = m_call->GetStats();
+        // webrtc::Call::Stats stats = m_call->GetStats();
 
-        // It's quite weird that recv_bw_bps is 0.
-        NS_LOG_INFO(stats.ToString(now));
+        // // It's quite weird that recv_bw_bps is 0.
+        // NS_LOG_INFO(stats.ToString(now));
 
-        if (!m_traceBw.IsNull()) {
-            m_traceBw(now, stats.recv_bandwidth_bps);
-        }
-        if (!m_traceRtt.IsNull()) {
-            m_traceRtt(now, stats.rtt_ms);
-        }
+        // if (!m_traceBw.IsNull()) {
+        //     m_traceBw(now, stats.recv_bandwidth_bps);
+        // }
+        // if (!m_traceRtt.IsNull()) {
+        //     m_traceRtt(now, stats.rtt_ms);
+        // }
     }
     if (m_running) {
         Simulator::ScheduleWithContext(m_context, Time (0), MakeEvent(&WebrtcSender::DeliveryPacket, this));
@@ -116,9 +120,9 @@ bool WebrtcSender::SendRtp(const uint8_t* packet,
 bool WebrtcSender::SendRtcp(const uint8_t* packet, size_t length){
     {
         NS_ASSERT(length<1500 && length>0);
-        rtc::CopyOnWriteBuffer buffer(packet, length);
+        rtc::Buffer buffer(packet, length);
         LockScope ls(&m_rtcpLock);
-        m_rtcpQ.push_back(buffer);
+        m_rtcpQ.push_back(std::move(buffer));
     }
     if(m_running) {
         Simulator::ScheduleWithContext(m_context, Time (0), MakeEvent(&WebrtcSender::DeliveryPacket, this));
@@ -158,7 +162,7 @@ void WebrtcSender::DeliveryPacket(){
     {
         LockScope ls(&m_rtpLock);
         while(!m_rtpQ.empty()){
-            rtc::CopyOnWriteBuffer buffer = m_rtpQ.front();
+            rtc::Buffer& buffer = m_rtpQ.front();
             Ptr<Packet> packet = Create<Packet>(buffer.data(), buffer.size());
             sendQ.push_back(packet);
             m_rtpQ.pop_front();
@@ -167,7 +171,7 @@ void WebrtcSender::DeliveryPacket(){
     {
         LockScope ls(&m_rtcpLock);
         while(!m_rtcpQ.empty()){
-            rtc::CopyOnWriteBuffer buffer = m_rtcpQ.front();
+            rtc::Buffer& buffer = m_rtcpQ.front();
             Ptr<Packet> packet = Create<Packet>(buffer.data(), buffer.size());
             sendQ.push_back(packet);
             m_rtcpQ.pop_front();

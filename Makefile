@@ -76,6 +76,12 @@ gym:
 		cp $(docker_ns_dir)/build/scratch/webrtc_test/webrtc_test $(docker_target_dir)/ \
 		"
 
+login:
+	docker run $(docker_flags) --ulimit core=-1 --security-opt seccomp=unconfined --privileged -ti \
+		-v $(target_dir):$(docker_target_dir) \
+		$(compile_docker) \
+		bash
+
 clean:
 	docker run $(docker_flags) $(compile_docker) \
 		bash -c \

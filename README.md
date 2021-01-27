@@ -4,6 +4,13 @@ Simulation for Alphartc cc algorithm on ns-3.32
 
 ### Setup Guide
 
+
+#### Install dependencies(Ubuntu 18.04)
+
+```sh
+sudo apt install libzmq5
+```
+
 #### Build Gym
 
 ```sh

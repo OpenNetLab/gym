@@ -13,7 +13,8 @@ def configure(conf):
       webrtc_absl_path],
     lib=[
       'webrtc',
-      'dl'],
+      'dl',
+      'zmq'],
     uselib_store = 'libwebrtc')
   conf.env.append_value("CXXFLAGS", [
     "-std=c++14",
@@ -30,7 +31,7 @@ def build(bld):
       "-DWEBRTC_POSIX",
       "-DWEBRTC_LINUX",
       '-DGYM'])
-    module.env.append_value("LIB", ["webrtc", "dl"])
+    module.env.append_value("LIB", ["webrtc", "dl", "zmq"])
     module.source = [
       'model/webrtc-config.cc',
       'model/webrtclog.cc',

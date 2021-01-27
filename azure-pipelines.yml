@@ -25,8 +25,13 @@ steps:
 - script: make gym
   displayName: 'Build gym'
 
-- script: mkdir -p traces && target/webrtc_test
-  displayName: 'Execute gym'
+- script: |
+    sudo apt install -qq -y libzmq5 python3 python3-pip
+    python3 -m pip install -r requirements.txt
+  displayName: 'Install runtime dependencies'
+
+- script: python3 -m pytest tests
+  displayName: 'Run test'
 
 - publish: $(System.DefaultWorkingDirectory)/target
   continueOnError: true

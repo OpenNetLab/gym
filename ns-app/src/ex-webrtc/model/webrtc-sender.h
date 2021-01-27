@@ -20,6 +20,7 @@ public:
   ~WebrtcSender() override;
   InetSocketAddress GetLocalAddress();
   void Bind(uint16_t port);
+  uint16_t GetBindPort() const;
   void ConfigurePeer(Ipv4Address addr, uint16_t port);
 
   typedef Callback<void, uint32_t, uint32_t> TraceBandwidth;
@@ -52,9 +53,9 @@ private:
   webrtc::Call* m_call{nullptr};
   uint32_t m_seq{1};
   AtomicLock m_rtpLock;
-  std::deque<rtc::CopyOnWriteBuffer> m_rtpQ;
+  std::deque<rtc::Buffer> m_rtpQ;
   AtomicLock m_rtcpLock;
-  std::deque<rtc::CopyOnWriteBuffer> m_rtcpQ;
+  std::deque<rtc::Buffer> m_rtcpQ;
   int64_t m_lastTraceTime{0};
 
   TraceBandwidth m_traceBw;

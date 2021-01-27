@@ -2,6 +2,8 @@
 
 #include "api/transport/network_control.h"
 
+#include <zmq.hpp>
+
 #include <cinttypes>
 #include <mutex>
 #include <shared_mutex>
@@ -12,10 +14,16 @@ class GymConnector {
  public:
   using BandwidthType = std::uint32_t;
 
-  GymConnector();
-  virtual ~GymConnector() = default;
+  GymConnector(
+    const std::string &gym_id = "gym",
+    std::uint64_t report_interval_ms = 60,
+    BandwidthType init_bandwidth = 0);
 
-  std::list<std::string> Step(BandwidthType bandwidth, std::uint32_t duration);
+  virtual ~GymConnector();
+
+  void Step(std::uint64_t delay_ms = 0);
+
+  void ReportStats();
 
   void SetBandwidth(BandwidthType bandwidth);
 
@@ -27,13 +35,19 @@ class GymConnector {
       const webrtc::RTPHeader& header,
       const webrtc::PacketResult& packet_result);
 
-  std::list<std::string> ConsumeStates();
+  std::list<std::string> ConsumeStats();
 
  private:
-  void Wait(std::uint32_t duration) const;
 
   BandwidthType current_bandwidth_;
   mutable std::shared_timed_mutex mutex_bandiwidth_;
   std::list<std::string> stats_;
   std::mutex mutex_stats_;
+
+  const std::uint64_t report_interval_ms_;
+
+  const std::string gym_id_;
+  zmq::context_t zmq_ctx_;
+  zmq::socket_t zmq_sock_;
+  bool zmq_wait_reply_;
 };
