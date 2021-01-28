@@ -8,7 +8,12 @@ Simulation for Alphartc cc algorithm on ns-3.32
 #### Install dependencies(Ubuntu 18.04)
 
 ```sh
-sudo apt install libzmq5
+sudo apt install libzmq5 python3 python3-pip
+python3 -m pip install -r requirements.txt
+# Install Docker
+curl -fsSL get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker ${USER}
 ```
 
 #### Build Gym
@@ -23,16 +28,11 @@ make gym # build_profile=debug
 
 If you want to build the debug version, try `make gym build_profile=debug`
 
-#### Execute Gym
+#### Verify gym
 
 ```sh
-mkdir -p traces
-target/webrtc_test
+python3 -m pytest tests
 ```
-
-#### Customized estimator
-
-You can set your own CC model to control the bitrate in `my_network_estimator.cc`
 
 ### Reference:
 
