@@ -18,6 +18,8 @@ sudo usermod -aG docker ${USER}
 
 #### Build Gym
 
+If you don't want to compile it by yourself, you can also directly download a pre-compiled binary from [AzurePipeline](https://dev.azure.com/OpenNetLab/ONL-github/_build?definitionId=5&_a=summary&repositoryFilter=5&branchFilter=56%2C56%2C56%2C56%2C56%2C56%2C56%2C56%2C56%2C56) and put it into the path that specifies in variable `__GYM_PROCESS_PATH__ ` of [gym_process.py](gym_process.py)
+
 ```sh
 git clone https://github.com/Pterosaur/alphartc-ns3.git gym
 cd gym
