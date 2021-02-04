@@ -27,50 +27,6 @@ const uint32_t TOPO_DEFAULT_BW     = 3000000;
 const uint32_t TOPO_DEFAULT_PDELAY =100;
 const uint32_t TOPO_DEFAULT_QDELAY =300;
 const uint32_t DEFAULT_PACKET_SIZE = 1000;
-const static uint32_t RATE_ARRAY[]= { 3000000, 500000, 1500000, 500000, 2000000 };
-
-// This class changes the rate of the bandwidth in a Round-Robin fashion
-// I.e., at second t, the rate will be adjusted to RATE_ARRAY[((t/m_gap)-1)%m_total]
-// Inspired and ported from https://blog.csdn.net/u010643777/article/details/80590045
-class ChangeBw
-{
-public:
-  ChangeBw (Ptr<NetDevice> netdevice)
-  {
-    m_total = sizeof (RATE_ARRAY) / sizeof (RATE_ARRAY[0]);
-    m_netdevice = netdevice;
-  }
-  ~ChangeBw ()
-  {
-  }
-  void
-  Start ()
-  {
-    Time next = Seconds (m_gap);
-    m_timer = Simulator::Schedule (next, &ChangeBw::ChangeRate, this);
-  }
-  void
-  ChangeRate ()
-  {
-    if (m_timer.IsExpired ())
-      {
-        NS_LOG_INFO (Simulator::Now ().GetSeconds () << " " << RATE_ARRAY[m_index] / 1000);
-        PointToPointNetDevice *device =
-            static_cast<PointToPointNetDevice *> (PeekPointer (m_netdevice));
-        device->SetDataRate (DataRate (RATE_ARRAY[m_index]));
-        m_index = (m_index + 1) % m_total;
-        Time next = Seconds (m_gap);
-        m_timer = Simulator::Schedule (next, &ChangeBw::ChangeRate, this);
-      }
-  }
-
-private:
-  uint32_t m_index{0};
-  uint32_t m_gap{2}; //change the link banwidth every 2s
-  uint32_t m_total{0};
-  Ptr<NetDevice> m_netdevice;
-  EventId m_timer;
-};
 
 static NodeContainer BuildExampleTopo (uint64_t bps,
                                        uint32_t msDelay,
@@ -211,13 +167,6 @@ int main(int argc, char *argv[]){
     auto sender = CreateApp<WebrtcSender>(nodes.Get(0), sendPort, 0, duration_time_ms, webrtc_manager.get());
     auto receiver = CreateApp<WebrtcReceiver>(nodes.Get(1), recvPort, 0, duration_time_ms, webrtc_manager.get());
     ConnectApp(sender, receiver);
-
-    // Ptr<NetDevice> netDevice=nodes.Get(1)->GetDevice(0);
-    // ChangeBw change(netDevice);
-    // change.Start();
-    // Ptr<NetDevice> netDevice2=nodes.Get(0)->GetDevice(0);
-    // ChangeBw change2(netDevice2);
-    // change2.Start();
 
     Simulator::Stop (MilliSeconds(duration_time_ms + 1));
     Simulator::Run ();

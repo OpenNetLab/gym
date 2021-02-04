@@ -35,5 +35,5 @@ steps:
 
 - publish: $(System.DefaultWorkingDirectory)/target
   continueOnError: true
-  artifact: alphartc-gym
+  artifact: target
   displayName: "Archive alphartc gym"

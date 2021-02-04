@@ -6,7 +6,7 @@ import os
 import signal
 
 __ROOT_PATH__ = os.path.dirname(os.path.abspath(__file__))
-__GYM_PROCESS_PATH__ = os.path.join(__ROOT_PATH__, "target", "webrtc_test")
+__GYM_PROCESS_PATH__ = os.path.join(__ROOT_PATH__, "target", "gym")
 
 
 class GymProcess(object):
