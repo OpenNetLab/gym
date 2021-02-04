@@ -1,11 +1,19 @@
-# Alphartc-gcc-ns3
+# Gym
 
-Simulation for Alphartc cc algorithm on ns-3.32
+[![Build Status](https://dev.azure.com/OpenNetLab/ONL-github/_apis/build/status/OpenNetLab.gym?branchName=master)](https://dev.azure.com/OpenNetLab/ONL-github/_build/latest?definitionId=6&branchName=master)
+
+This gym leverages NS3 and WebRTC, which can be used by reinforcement learning or other methods to build a Bandwidth Controller for WebRTC.
 
 ### Setup Guide
 
+#### Get Gym
 
-#### Install dependencies(Ubuntu 18.04)
+```sh
+git clone https://github.com/Pterosaur/alphartc-ns3.git gym
+cd gym
+```
+
+#### Install dependencies(Ubuntu 18.04 or Ubuntu 20.04)
 
 ```sh
 sudo apt install libzmq5 python3 python3-pip
@@ -16,13 +24,18 @@ sudo sh get-docker.sh
 sudo usermod -aG docker ${USER}
 ```
 
-#### Build Gym
+#### Download pre-compiled binary
 
-If you don't want to compile it by yourself, you can also directly download a pre-compiled binary from [AzurePipeline](https://dev.azure.com/OpenNetLab/ONL-github/_build?definitionId=5&_a=summary&repositoryFilter=5&branchFilter=56%2C56%2C56%2C56%2C56%2C56%2C56%2C56%2C56%2C56) and put it into the path that specifies in variable `__GYM_PROCESS_PATH__ ` of [gym_process.py](gym_process.py)
+If your OS is ubuntu18.04 or ubuntu20.04, we recommend you directly downloading pre-compiled binary, and please skip step [Build Gym](#Build-Gym)
+
+The pre-compiled binary can be found from [AzurePipeline](https://dev.azure.com/OpenNetLab/ONL-github/_build/latest?definitionId=6&branchName=master)
+1. Click published item in its summary tab
+2. Download the target and unzip it in the project path
+3. Grand the executing permission to the binary by `chmod 777 target/gym`
+
+#### Build Gym binary
 
 ```sh
-git clone https://github.com/Pterosaur/alphartc-ns3.git gym
-cd gym
 make init
 make sync
 make gym # build_profile=debug
@@ -36,7 +49,10 @@ If you want to build the debug version, try `make gym build_profile=debug`
 python3 -m pytest tests
 ```
 
-### Reference:
+### Interface description
 
-1. download webrtc(m84):  [instruction](https://mediasoup.org/documentation/v3/libmediasoupclient/installation/)
-2. Evaluate webrtc GCC congestion control on ns3: [link](https://blog.csdn.net/u010643777/article/details/107237315)
+You can use this Gym by a Python interface that was defined in [gym.py](gym.py)
+### Inspiration
+
+Thanks [SoonyangZhang](https://github.com/SoonyangZhang) provides the inspiration for the gym
+

@@ -73,7 +73,7 @@ gym:
 		--check-cxx-compiler=clang++ --check-c-compiler=clang \
 		--build-profile=$(build_profile); \
 		$(docker_ns_dir)/waf build; \
-		cp $(docker_ns_dir)/build/scratch/webrtc_test/webrtc_test $(docker_target_dir)/ \
+		cp $(docker_ns_dir)/build/scratch/webrtc_test/webrtc_test $(docker_target_dir)/gym \
 		"
 
 login:
