@@ -2,7 +2,6 @@
 
 #include "ns3/simulator.h"
 
-#include <nlohmann/json.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <string>
@@ -119,15 +118,15 @@ void GymConnector::ProduceStates(
     j["header_length"] = header.headerLength;
     j["payload_size"] = payload_size;
 
-    const std::string stats = j.dump();
+    // const std::string stats = j.dump();
     {
         std::unique_lock<std::mutex> guard(mutex_stats_);
-        stats_.push_back(stats);
+        stats_.push_back(j);
     }
 }
 
-std::list<std::string> GymConnector::ConsumeStats() {
-    std::list<std::string> stats;
+std::list<nlohmann::json> GymConnector::ConsumeStats() {
+    std::list<nlohmann::json> stats;
     {
         std::unique_lock<std::mutex> guard(mutex_stats_);
         std::swap(stats, stats_);

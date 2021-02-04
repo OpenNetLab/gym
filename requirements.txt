@@ -1,4 +1,5 @@
 pyzmq
+numpy
 pytest
 pytest-timeout
 pytest-repeat

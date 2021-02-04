@@ -3,6 +3,7 @@
 #include "api/transport/network_control.h"
 
 #include <zmq.hpp>
+#include <nlohmann/json.hpp>
 
 #include <cinttypes>
 #include <mutex>
@@ -35,13 +36,13 @@ class GymConnector {
       const webrtc::RTPHeader& header,
       const webrtc::PacketResult& packet_result);
 
-  std::list<std::string> ConsumeStats();
+  std::list<nlohmann::json> ConsumeStats();
 
  private:
 
   BandwidthType current_bandwidth_;
   mutable std::shared_timed_mutex mutex_bandiwidth_;
-  std::list<std::string> stats_;
+  std::list<nlohmann::json> stats_;
   std::mutex mutex_stats_;
 
   const std::uint64_t report_interval_ms_;

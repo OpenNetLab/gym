@@ -1,5 +1,5 @@
 #pragma once
-#include <deque>
+
 #include "ns3/event-id.h"
 #include "ns3/callback.h"
 #include "ns3/application.h"
@@ -7,9 +7,11 @@
 #include "ns3/network-module.h"
 #include "ns3/internet-module.h"
 #include "ns3/webrtc-config.h"
-#include "ns3/atomic-lock.h"
 #include "test/scenario/transport_base.h"
 #include "call/call.h"
+
+#include <deque>
+#include <mutex>
 
 namespace ns3 {
 
@@ -48,9 +50,9 @@ private:
   webrtc::Call* m_call{nullptr};
   uint32_t m_maxSeenSeq{0};
   uint32_t m_seq{1};
-  AtomicLock m_rtpLock;
+  std::mutex m_rtpMutex;
   std::deque<rtc::Buffer> m_rtpQ;
-  AtomicLock m_rtcpLock;
+  std::mutex m_rtcpMutex;
   std::deque<rtc::Buffer> m_rtcpQ;
   uint32_t m_packetOverhead{0};
   uint32_t m_context{0};

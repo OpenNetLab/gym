@@ -24,6 +24,8 @@ def test_base():
         all_stats += stats
     # stats shouldn't be empty
     assert(all_stats)
+    for stats in all_stats:
+        assert(isinstance(stats, dict))
     assert(proc.wait() == 0)
 
 @pytest.mark.timeout(200)
@@ -46,4 +48,6 @@ def test_trace():
         all_stats += stats
     # stats shouldn't be empty
     assert(all_stats)
+    for stats in all_stats:
+        assert(isinstance(stats, dict))
     assert(proc.wait() == 0)

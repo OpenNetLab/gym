@@ -16,6 +16,8 @@ namespace ns3{
 class WebrtcSessionManager{
 public:
     WebrtcSessionManager(
+        std::uint64_t start_time_ms,
+        std::uint64_t stop_time_ms,
         std::shared_ptr<webrtc::NetworkControllerFactoryInterface> cc_factory = nullptr,
         std::shared_ptr<webrtc::NetworkStateEstimatorFactory> se_factory = nullptr);
     ~WebrtcSessionManager();

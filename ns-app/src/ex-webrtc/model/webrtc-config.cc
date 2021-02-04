@@ -1,5 +1,6 @@
 #include "webrtc-config.h"
-#include "webrtc-util.h"
+#include "webrtc-emu-controller.h"
+#include "webrtc-simu-controller.h"
 
 #include "test/scenario/scenario_config.h"
 #include "test/scenario/video_frame_matcher.h"
@@ -22,13 +23,19 @@ const float kDefaultPacingRate = 2.5f;
 }
 
 WebrtcSessionManager::WebrtcSessionManager(
+    std::uint64_t start_time_ms,
+    std::uint64_t stop_time_ms,
     std::shared_ptr<webrtc::NetworkControllerFactoryInterface> cc_factory,
     std::shared_ptr<webrtc::NetworkStateEstimatorFactory> se_factory)
 {
     video_stream_config_.stream.abs_send_time = true;
     call_client_config_.transport.cc_factory = cc_factory.get();
     call_client_config_.transport.se_factory = se_factory.get();
-    time_controller_.reset(new webrtc::MyRealTimeController());
+    // time_controller_.reset(new webrtc::EmulationTimeController());
+    time_controller_.reset(
+        new webrtc::SimulationTimeController(
+            start_time_ms * 1e3,
+            stop_time_ms * 1e3));
 }
 
 WebrtcSessionManager::~WebrtcSessionManager() {

@@ -33,13 +33,15 @@ def build(bld):
       '-DGYM'])
     module.env.append_value("LIB", ["webrtc", "dl", "zmq"])
     module.source = [
+      'model/simulated-process-thread.cc',
+      'model/simulated-task-queue.cc',
+      'model/simulated-thread.cc',
       'model/webrtc-config.cc',
-      'model/webrtclog.cc',
       'model/webrtc-receiver.cc',
       'model/webrtc-sender.cc',
-      'model/webrtc-tag.cc',
-      'model/webrtc-trace.cc',
-      'model/webrtc-util.cc',
+      'model/webrtc-clock.cc',
+      'model/webrtc-emu-controller.cc',
+      'model/webrtc-simu-controller.cc',
       'api/test/create_frame_generator.cc',
       'api/test/network_emulation/network_emulation_interfaces.cc',
       'test/encoder_settings.cc',
@@ -74,14 +76,11 @@ def build(bld):
     headers = bld(features='ns3header')
     headers.module = 'ex-webrtc'
     headers.source = [
-      'model/atomic-lock.h',
       'model/webrtc-config.h',
       'model/webrtc-defines.h',
-      'model/webrtclog.h',
       'model/webrtc-receiver.h',
       'model/webrtc-sender.h',
-      'model/webrtc-tag.h',
-      'model/webrtc-trace.h',
-      'model/webrtc-util.h',
+      'model/webrtc-clock.h',
+      'model/webrtc-emu-controller.h',
     ]
     module.use.append("libwebrtc")

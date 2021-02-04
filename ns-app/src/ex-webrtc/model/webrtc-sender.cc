@@ -4,7 +4,6 @@
 #include "rtc_base/net_helper.h"
 #include "rtc_base/network/sent_packet.h"
 #include "api/test/network_emulation/network_emulation_interfaces.h"
-#include "webrtc-tag.h"
 
 namespace ns3{
 
@@ -84,7 +83,7 @@ bool WebrtcSender::SendRtp(const uint8_t* packet,
     m_call->OnSentPacket(sent_packet);
     {
         rtc::Buffer buffer(packet, length);
-        LockScope ls(&m_rtpLock);
+        std::unique_lock<std::mutex> lock(m_rtpMutex);
         m_rtpQ.push_back(std::move(buffer));
     }
     bool output = false;
@@ -121,7 +120,7 @@ bool WebrtcSender::SendRtcp(const uint8_t* packet, size_t length){
     {
         NS_ASSERT(length<1500 && length>0);
         rtc::Buffer buffer(packet, length);
-        LockScope ls(&m_rtcpLock);
+        std::unique_lock<std::mutex> lock(m_rtcpMutex);
         m_rtcpQ.push_back(std::move(buffer));
     }
     if(m_running) {
@@ -160,7 +159,7 @@ void WebrtcSender::NotifyRouteChange(){
 void WebrtcSender::DeliveryPacket(){
     std::deque<Ptr<Packet>> sendQ;
     {
-        LockScope ls(&m_rtpLock);
+        std::unique_lock<std::mutex> lock(m_rtpMutex);
         while(!m_rtpQ.empty()){
             rtc::Buffer& buffer = m_rtpQ.front();
             Ptr<Packet> packet = Create<Packet>(buffer.data(), buffer.size());
@@ -169,7 +168,7 @@ void WebrtcSender::DeliveryPacket(){
         }
     }
     {
-        LockScope ls(&m_rtcpLock);
+        std::unique_lock<std::mutex> lock(m_rtcpMutex);
         while(!m_rtcpQ.empty()){
             rtc::Buffer& buffer = m_rtcpQ.front();
             Ptr<Packet> packet = Create<Packet>(buffer.data(), buffer.size());

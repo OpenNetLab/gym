@@ -16,8 +16,8 @@ class GymConnector(object):
         self.zmq_sock = self.zmq_ctx.socket(zmq.REQ)
         self.zmq_sock.connect(__ZMQ_PREFIX__ + self.gym_id)
 
-    def step(self, bandwidth):
-        self.zmq_sock.send_string(str(int(bandwidth)))
+    def step(self, bandwidth_bps = int):
+        self.zmq_sock.send_string(str(int(bandwidth_bps)))
         rep = self.zmq_sock.recv()
         if rep == __GYM_EXIT_FLAG__:
             return None
