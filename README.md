@@ -1,5 +1,7 @@
 # Gym
 
+[![Build Status](https://dev.azure.com/OpenNetLab/ONL-github/_apis/build/status/OpenNetLab.gym?branchName=master)](https://dev.azure.com/OpenNetLab/ONL-github/_build/latest?definitionId=6&branchName=master)
+
 This gym leverages NS3 and WebRTC, which can be used by reinforcement learning or other methods to build a Bandwidth Controller for WebRTC.
 
 ### Setup Guide
@@ -53,4 +55,4 @@ python3 -m pytest tests
 You can use this Gym by a Python interface that was defined in [gym.py](gym.py)
 ### Inspiration
 
-Thanks [SoonyangZhang](https://github.com/SoonyangZhang) provide the inspiration for the gym
+Thanks [SoonyangZhang](https://github.com/SoonyangZhang) provides the inspiration for the gym
