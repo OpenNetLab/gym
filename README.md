@@ -31,7 +31,7 @@ If your OS is ubuntu18.04 or ubuntu20.04, we recommend you directly downloading 
 The pre-compiled binary can be found from [AzurePipeline](https://dev.azure.com/OpenNetLab/ONL-github/_build/latest?definitionId=6&branchName=master)
 1. Click published item in its summary tab
 2. Download the target and unzip it in the project path
-3. Grand the executing permission to the binary by `chmod 777 target/gym`
+3. Grant the executing permission to the binary by `chmod 777 target/gym`
 
 #### Build Gym binary
 
