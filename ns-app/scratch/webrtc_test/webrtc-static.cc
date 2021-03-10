@@ -142,10 +142,12 @@ int main(int argc, char *argv[]){
     std::unique_ptr<TracePlayer> trace_player;
     if (trace_path.empty() && duration_time_ms == 0) {
       duration_time_ms = 5000;
-    } else if (duration_time_ms == 0) {
+    } else if (!trace_path.empty()) {
       // Set trace
       trace_player = std::make_unique<TracePlayer>(trace_path, nodes);
-      duration_time_ms = trace_player->GetTotalDuration();
+      if (duration_time_ms == 0) {
+        duration_time_ms = trace_player->GetTotalDuration();
+      }
     }
 
     GymConnector gym_conn(gym_id, report_interval_ms);
