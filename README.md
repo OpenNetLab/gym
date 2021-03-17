@@ -26,7 +26,7 @@ sudo usermod -aG docker ${USER}
 
 #### Download pre-compiled binary
 
-If your OS is ubuntu18.04 or ubuntu20.04, we recommend you directly downloading pre-compiled binary, and please skip step [Build Gym](#Build-Gym)
+If your OS is ubuntu18.04 or ubuntu20.04, we recommend you directly downloading pre-compiled binary, and please skip the step [Build Gym](#Build-Gym)
 
 The pre-compiled binary can be found from [AzurePipeline](https://dev.azure.com/OpenNetLab/ONL-github/_build/latest?definitionId=6&branchName=master)
 1. Click published item in its summary tab
