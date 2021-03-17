@@ -46,7 +46,7 @@ If you want to build the debug version, try `make gym build_profile=debug`
 #### Verify gym
 
 ```sh
-python3 -m pytest tests
+python3 -m pytest alphartc_gym
 ```
 
 ### Interface description
