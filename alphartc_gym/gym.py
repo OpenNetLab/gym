@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import gym_process
-import gym_connect
+from alphartc_gym import gym_process
+from alphartc_gym import gym_connect
 
 import os
 import uuid
