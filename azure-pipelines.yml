@@ -30,7 +30,7 @@ steps:
     python3 -m pip install -r requirements.txt
   displayName: 'Install runtime dependencies'
 
-- script: python3 -m pytest tests
+- script: python3 -m pytest alphartc_gym/tests
   displayName: 'Run test'
 
 - publish: $(System.DefaultWorkingDirectory)/target
