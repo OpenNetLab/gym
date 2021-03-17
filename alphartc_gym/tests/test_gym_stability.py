@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import gym
-from utils.packet_info import PacketInfo
-from utils.packet_record import PacketRecord
+from alphartc_gym import gym
+from alphartc_gym.utils.packet_info import PacketInfo
+from alphartc_gym.utils.packet_record import PacketRecord
 import os
 import json
 
