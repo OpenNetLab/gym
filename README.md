@@ -9,7 +9,7 @@ This gym leverages NS3 and WebRTC, which can be used by reinforcement learning o
 #### Get Gym
 
 ```sh
-git clone https://github.com/Pterosaur/alphartc-ns3.git gym
+git clone https://github.com/OpenNetLab/gym gym
 cd gym
 ```
 
