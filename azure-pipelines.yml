@@ -16,24 +16,34 @@ pool:
 steps:
 - checkout: self
 
-- script: make init
-  displayName: 'Build environment'
+# - script: make init
+#   displayName: 'Build environment'
 
-- script: make sync
-  displayName: 'Sync dependencies'
+# - script: make sync
+#   displayName: 'Sync dependencies'
 
-- script: make gym
-  displayName: 'Build gym'
+# - script: make gym
+#   displayName: 'Build gym'
 
-- script: |
-    sudo apt install -qq -y libzmq5 python3 python3-pip
-    python3 -m pip install -r requirements.txt
-  displayName: 'Install runtime dependencies'
+# - script: |
+#     sudo apt install -qq -y libzmq5 python3 python3-pip
+#     python3 -m pip install -r requirements.txt
+#   displayName: 'Install runtime dependencies'
 
-- script: python3 -m pytest alphartc_gym
-  displayName: 'Run test'
+# - script: python3 -m pytest alphartc_gym
+#   displayName: 'Run test'
 
-- publish: $(System.DefaultWorkingDirectory)/target
-  continueOnError: true
-  artifact: target
-  displayName: "Archive alphartc gym"
+# - publish: $(System.DefaultWorkingDirectory)/target
+#   continueOnError: true
+#   artifact: target
+#   displayName: "Archive alphartc gym"
+
+- task: GitHubRelease@0
+  inputs:
+    gitHubConnection: OpenNetLab
+    repositoryName: $(Build.Repository.Name)
+    tagSource: manual
+    tag: $(Build.BuildNumber)
+    assets: |
+      $(System.DefaultWorkingDirectory)/README.txt
+
