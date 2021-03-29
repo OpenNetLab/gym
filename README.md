@@ -28,10 +28,11 @@ sudo usermod -aG docker ${USER}
 
 If your OS is ubuntu18.04 or ubuntu20.04, we recommend you directly downloading pre-compiled binary, and please skip the step [Build Gym binary](#Build-Gym-binary)
 
-The pre-compiled binary can be found from [AzurePipeline](https://dev.azure.com/OpenNetLab/ONL-github/_build/latest?definitionId=6&branchName=master)
-1. Click published item in its summary tab
-2. Download the target and unzip it in the project path
-3. Grant the executing permission to the binary by `chmod 777 target/gym`
+The pre-compiled binary can be found from the latest [GithubRelease](https://github.com/OpenNetLab/gym/releases/latest/download/target.tar.gz). Please download and uncompress it in the current folder.
+```
+wget https://github.com/OpenNetLab/gym/releases/latest/download/target.tar.gz
+tar -xvzf target.tar.gz
+```
 
 #### Build Gym binary
 
