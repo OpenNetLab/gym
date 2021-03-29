@@ -2,14 +2,14 @@
 
 [![Build Status](https://dev.azure.com/OpenNetLab/ONL-github/_apis/build/status/OpenNetLab.gym?branchName=master)](https://dev.azure.com/OpenNetLab/ONL-github/_build/latest?definitionId=6&branchName=master)
 
-This gym leverages NS3 and WebRTC, which can be used by reinforcement learning or other methods to build a Bandwidth Controller for WebRTC.
+This gym leverages NS3 and WebRTC, which can be used by reinforcement learning or other methods to build a Bandwidth Controller for WebRTC. Here is an example [gym-example](https://github.com/OpenNetLab/gym-example) to use this Gym training a bandwidth estimator.
 
 ### Setup Guide
 
 #### Get Gym
 
 ```sh
-git clone https://github.com/Pterosaur/alphartc-ns3.git gym
+git clone https://github.com/OpenNetLab/gym gym
 cd gym
 ```
 
