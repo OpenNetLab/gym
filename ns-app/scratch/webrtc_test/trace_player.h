@@ -9,6 +9,7 @@
 struct TraceItem {
     std::uint64_t capacity_;
     std::uint64_t duration_ms_;
+    double loss_rate_;
 };
 
 class TracePlayer {
