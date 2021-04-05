@@ -6,6 +6,7 @@
 #include "ns3/double.h"
 #include "ns3/pointer.h"
 #include "ns3/string.h"
+#include "ns3/channel.h"
 
 #include <nlohmann/json.hpp>
 #include <boost/lexical_cast.hpp>
@@ -45,6 +46,7 @@ void TracePlayer::LoadTrace() {
         ti.capacity_ = lexical_cast<decltype(ti.capacity_)>(trace["capacity"]);
         ti.duration_ms_ = lexical_cast<decltype(ti.duration_ms_)>(trace["duration"]);
         ti.loss_rate_ = lexical_cast<decltype(ti.loss_rate_)>(trace["loss"]);
+        ti.rtt_ = lexical_cast<decltype(ti.rtt_)>(trace["rtt"]);
         traces.push_back(std::move(ti));
     }
     traces_.swap(traces);
@@ -60,12 +62,14 @@ void TracePlayer::PlayTrace(size_t trace_index) {
     const auto &trace = traces_[trace_index];
     for (size_t i = 0; i < nodes_.GetN(); i++) {
         auto node = nodes_.Get(i);
+        // set delay in channel
+        node->GetDevice(0)->GetChannel()->SetAttribute("Delay", StringValue(std::to_string(trace.rtt_/2.0) + "ms"));
         for (size_t j = 0; j < node->GetNDevices(); j++) {
             auto device =
                 dynamic_cast<PointToPointNetDevice *>(PeekPointer(node->GetDevice(j)));
             if (device) {
                 device->SetDataRate(DataRate(trace.capacity_ * 1e3));
-                // loss rate
+                // set loss rate in every device
 		        Ptr<RateErrorModel> em = CreateObjectWithAttributes<RateErrorModel> ("RanVar", StringValue("ns3::UniformRandomVariable[Min=0.0|Max=1.0]"), \
                                                                                      "ErrorRate", DoubleValue (trace.loss_rate_), \
                                                                                      "ErrorUnit", StringValue("ERROR_UNIT_PACKET"));
