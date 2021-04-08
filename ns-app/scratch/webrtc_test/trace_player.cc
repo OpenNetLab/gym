@@ -2,6 +2,8 @@
 
 #include "ns3/point-to-point-net-device.h"
 #include "ns3/simulator.h"
+#include "ns3/string.h"
+#include "ns3/channel.h"
 
 #include <nlohmann/json.hpp>
 #include <boost/lexical_cast.hpp>
@@ -40,6 +42,11 @@ void TracePlayer::LoadTrace() {
         TraceItem ti;
         ti.capacity_ = lexical_cast<decltype(ti.capacity_)>(trace["capacity"]);
         ti.duration_ms_ = lexical_cast<decltype(ti.duration_ms_)>(trace["duration"]);
+        if (trace.find("rtt") != trace.end()) {
+            ti.rtt_ms_ = lexical_cast<decltype(ti.rtt_ms_)>(trace["rtt"]);
+        } else {
+            ti.rtt_ms_ = 0;
+        }
         traces.push_back(std::move(ti));
     }
     traces_.swap(traces);
@@ -55,6 +62,8 @@ void TracePlayer::PlayTrace(size_t trace_index) {
     const auto &trace = traces_[trace_index];
     for (size_t i = 0; i < nodes_.GetN(); i++) {
         auto node = nodes_.Get(i);
+        // set delay in channel
+        node->GetDevice(0)->GetChannel()->SetAttribute("Delay", StringValue(std::to_string(trace.rtt_ms_/2.0) + "ms"));
         for (size_t j = 0; j < node->GetNDevices(); j++) {
             auto device =
                 dynamic_cast<PointToPointNetDevice *>(PeekPointer(node->GetDevice(j)));
