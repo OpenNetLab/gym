@@ -2,6 +2,9 @@
 
 #include "ns3/point-to-point-net-device.h"
 #include "ns3/simulator.h"
+#include "ns3/error-model.h"
+#include "ns3/double.h"
+#include "ns3/pointer.h"
 
 #include <nlohmann/json.hpp>
 #include <boost/lexical_cast.hpp>
@@ -40,6 +43,7 @@ void TracePlayer::LoadTrace() {
         TraceItem ti;
         ti.capacity_ = lexical_cast<decltype(ti.capacity_)>(trace["capacity"]);
         ti.duration_ms_ = lexical_cast<decltype(ti.duration_ms_)>(trace["duration"]);
+        ti.loss_rate_ = lexical_cast<decltype(ti.loss_rate_)>(trace["loss"]);
         traces.push_back(std::move(ti));
     }
     traces_.swap(traces);
@@ -60,6 +64,11 @@ void TracePlayer::PlayTrace(size_t trace_index) {
                 dynamic_cast<PointToPointNetDevice *>(PeekPointer(node->GetDevice(j)));
             if (device) {
                 device->SetDataRate(DataRate(trace.capacity_ * 1e3));
+                // set loss rate in every device
+		        Ptr<RateErrorModel> em = CreateObjectWithAttributes<RateErrorModel> ("RanVar", StringValue("ns3::UniformRandomVariable[Min=0.0|Max=1.0]"), \
+                                                                                     "ErrorRate", DoubleValue (trace.loss_rate_), \
+                                                                                     "ErrorUnit", StringValue("ERROR_UNIT_PACKET"));
+                device->SetAttribute("ReceiveErrorModel", PointerValue (em));
             }
         }
     }
