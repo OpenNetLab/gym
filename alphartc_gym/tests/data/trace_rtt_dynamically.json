@@ -4,18 +4,18 @@
     "uplink": {
         "trace_pattern": [
             {
-                "duration": 200,
+                "duration": 2000,
                 "capacity": 1000,
                 "loss": 0,
-                "rtt": 50,
+                "rtt": 200,
                 "jitter": 0,
                 "time": 0.0
             },
             {
-                "duration": 200,
+                "duration": 2000,
                 "capacity": 1000,
-                "rtt": 20,
                 "loss": 0,
+                "rtt": 400,
                 "jitter": 0,
                 "time": 0.0
             }

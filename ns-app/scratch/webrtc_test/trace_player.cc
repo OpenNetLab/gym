@@ -43,10 +43,8 @@ void TracePlayer::LoadTrace() {
         ti.capacity_ = lexical_cast<decltype(ti.capacity_)>(trace["capacity"]);
         ti.duration_ms_ = lexical_cast<decltype(ti.duration_ms_)>(trace["duration"]);
         if (trace.find("rtt") != trace.end()) {
-            ti.rtt_ms_ = lexical_cast<decltype(ti.rtt_ms_)>(trace["rtt"]);
-        } else {
-            ti.rtt_ms_ = 0;
-        }
+            ti.rtt_ms_ = lexical_cast<std::uint64_t>(trace["rtt"]);
+        }        
         traces.push_back(std::move(ti));
     }
     traces_.swap(traces);
@@ -63,7 +61,9 @@ void TracePlayer::PlayTrace(size_t trace_index) {
     for (size_t i = 0; i < nodes_.GetN(); i++) {
         auto node = nodes_.Get(i);
         // set delay in channel
-        node->GetDevice(0)->GetChannel()->SetAttribute("Delay", StringValue(std::to_string(trace.rtt_ms_/2.0) + "ms"));
+        if (trace.rtt_ms_) {
+            node->GetDevice(0)->GetChannel()->SetAttribute("Delay", StringValue(std::to_string(trace.rtt_ms_.value()/2.0) + "ms"));
+        }
         for (size_t j = 0; j < node->GetNDevices(); j++) {
             auto device =
                 dynamic_cast<PointToPointNetDevice *>(PeekPointer(node->GetDevice(j)));
