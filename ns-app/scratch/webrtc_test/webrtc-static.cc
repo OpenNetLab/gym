@@ -101,8 +101,7 @@ int main(int argc, char *argv[]){
     uint32_t msDelay  = TOPO_DEFAULT_PDELAY;
     uint32_t msQDelay = TOPO_DEFAULT_QDELAY;
 
-    std::string instance=std::string("3");
-    std::string loss_str("0");
+    double loss_rate = 0;
 
     std::string gym_id("gym");
     std::string trace_path;
@@ -111,8 +110,7 @@ int main(int argc, char *argv[]){
     bool standalone_test_only = true;
 
     CommandLine cmd;
-    cmd.AddValue("it", "instacne", instance);
-    cmd.AddValue("lo", "loss",loss_str);
+    cmd.AddValue("lo", "loss",loss_rate);
     cmd.AddValue("gym_id", "gym id should be unique in global system, the default is gym", gym_id);
     cmd.AddValue("trace_path", "trace file path", trace_path);
     cmd.AddValue("report_interval_ms", "report interval (ms)", report_interval_ms);
@@ -121,21 +119,14 @@ int main(int argc, char *argv[]){
 
     cmd.Parse (argc, argv);
 
-    int loss_integer=std::stoi(loss_str);
-    double loss_rate=loss_integer*1.0/1000;
-
     bool enable_random_loss=false;
-    if(loss_integer>0){
+    if(loss_rate>0){
         Config::SetDefault ("ns3::RateErrorModel::ErrorRate", DoubleValue (loss_rate));
         Config::SetDefault ("ns3::RateErrorModel::ErrorUnit", StringValue ("ERROR_UNIT_PACKET"));
         Config::SetDefault ("ns3::BurstErrorModel::ErrorRate", DoubleValue (loss_rate));
         Config::SetDefault ("ns3::BurstErrorModel::BurstSize", StringValue ("ns3::UniformRandomVariable[Min=1|Max=3]"));
         enable_random_loss=true;
     }
-
-    uint32_t min_rate=0;
-    uint32_t start_rate=500;
-    uint32_t max_rate=linkBw/1000;
 
     NodeContainer nodes = BuildExampleTopo(linkBw, msDelay, msQDelay,enable_random_loss);
 
@@ -161,7 +152,6 @@ int main(int argc, char *argv[]){
     auto se_factory = std::make_shared<NetworkStateEstimatorProxyFactory>(gym_conn);
     auto webrtc_manager = std::make_unique<WebrtcSessionManager>(0, duration_time_ms, cc_factory, se_factory);
     webrtc_manager->SetFrameHxW(720,1280);
-    webrtc_manager->SetRate(min_rate,start_rate,max_rate);
     webrtc_manager->CreateClients();
 
     uint16_t sendPort=5432;

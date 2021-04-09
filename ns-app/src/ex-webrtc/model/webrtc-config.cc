@@ -106,9 +106,6 @@ void WebrtcSessionManager::SetFrameHxW(uint32_t height,uint32_t width) {
     video_stream_config_.source.generator.height = height;
 }
 
-void WebrtcSessionManager::SetRate(uint32_t min_rate,uint32_t start_rate,uint32_t max_rate) {
-}
-
 void test_match_active() {
     webrtc::test::VideoStreamConfig config = webrtc::test::VideoStreamConfig();
     config.source.generator.width = 1280;
