@@ -11,6 +11,7 @@ struct TraceItem {
     std::uint64_t capacity_;
     std::uint64_t duration_ms_;
     boost::optional<double> loss_rate_;
+    boost::optional<std::uint64_t> rtt_ms_;
 };
 
 class TracePlayer {

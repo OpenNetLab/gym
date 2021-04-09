@@ -6,6 +6,7 @@
 #include "ns3/error-model.h"
 #include "ns3/double.h"
 #include "ns3/pointer.h"
+#include "ns3/channel.h"
 
 #include <nlohmann/json.hpp>
 #include <boost/lexical_cast.hpp>
@@ -47,6 +48,9 @@ void TracePlayer::LoadTrace() {
         if (trace.find("loss") != trace.end()) {
             ti.loss_rate_ = lexical_cast<double>(trace["loss"]);
         }
+        if (trace.find("rtt") != trace.end()) {
+            ti.rtt_ms_ = lexical_cast<std::uint64_t>(trace["rtt"]);
+        }        
         traces.push_back(std::move(ti));
     }
     traces_.swap(traces);
@@ -62,6 +66,10 @@ void TracePlayer::PlayTrace(size_t trace_index) {
     const auto &trace = traces_[trace_index];
     for (size_t i = 0; i < nodes_.GetN(); i++) {
         auto node = nodes_.Get(i);
+        // set delay in channel
+        if (trace.rtt_ms_) {
+            node->GetDevice(0)->GetChannel()->SetAttribute("Delay", StringValue(std::to_string(trace.rtt_ms_.value()/2.0) + "ms"));
+        }
         for (size_t j = 0; j < node->GetNDevices(); j++) {
             auto device =
                 dynamic_cast<PointToPointNetDevice *>(PeekPointer(node->GetDevice(j)));
