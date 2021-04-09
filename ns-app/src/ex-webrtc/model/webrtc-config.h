@@ -43,7 +43,5 @@ private:
     std::vector<std::unique_ptr<webrtc::test::VideoStreamPair>> video_streams_;
 };
 
-void test_match_active();
-
 }
 
