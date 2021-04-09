@@ -2,6 +2,7 @@
 
 #include "ns3/point-to-point-net-device.h"
 #include "ns3/simulator.h"
+#include "ns3/string.h"
 #include "ns3/error-model.h"
 #include "ns3/double.h"
 #include "ns3/pointer.h"
@@ -43,7 +44,9 @@ void TracePlayer::LoadTrace() {
         TraceItem ti;
         ti.capacity_ = lexical_cast<decltype(ti.capacity_)>(trace["capacity"]);
         ti.duration_ms_ = lexical_cast<decltype(ti.duration_ms_)>(trace["duration"]);
-        ti.loss_rate_ = lexical_cast<decltype(ti.loss_rate_)>(trace["loss"]);
+        if (trace.find("loss") != trace.end()) {
+            ti.loss_rate_ = lexical_cast<double>(trace["loss"]);
+        }
         traces.push_back(std::move(ti));
     }
     traces_.swap(traces);
@@ -65,10 +68,12 @@ void TracePlayer::PlayTrace(size_t trace_index) {
             if (device) {
                 device->SetDataRate(DataRate(trace.capacity_ * 1e3));
                 // set loss rate in every device
-		        Ptr<RateErrorModel> em = CreateObjectWithAttributes<RateErrorModel> ("RanVar", StringValue("ns3::UniformRandomVariable[Min=0.0|Max=1.0]"), \
-                                                                                     "ErrorRate", DoubleValue (trace.loss_rate_), \
+                if (trace.loss_rate_) {
+                    Ptr<RateErrorModel> em = CreateObjectWithAttributes<RateErrorModel> ("RanVar", StringValue("ns3::UniformRandomVariable[Min=0.0|Max=1.0]"), \
+                                                                                     "ErrorRate", DoubleValue (trace.loss_rate_.value()), \
                                                                                      "ErrorUnit", StringValue("ERROR_UNIT_PACKET"));
-                device->SetAttribute("ReceiveErrorModel", PointerValue (em));
+                    device->SetAttribute("ReceiveErrorModel", PointerValue (em));
+                }
             }
         }
     }

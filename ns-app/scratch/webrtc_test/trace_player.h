@@ -5,11 +5,12 @@
 #include <string>
 #include <cinttypes>
 #include <vector>
+#include <boost/optional.hpp>
 
 struct TraceItem {
     std::uint64_t capacity_;
     std::uint64_t duration_ms_;
-    double loss_rate_;
+    boost::optional<double> loss_rate_;
 };
 
 class TracePlayer {
