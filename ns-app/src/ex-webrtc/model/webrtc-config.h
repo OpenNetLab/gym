@@ -22,7 +22,6 @@ public:
         std::shared_ptr<webrtc::NetworkStateEstimatorFactory> se_factory = nullptr);
     ~WebrtcSessionManager();
     void SetFrameHxW(uint32_t height,uint32_t width);
-    void SetRate(uint32_t min_rate,uint32_t start_rate,uint32_t max_rate);
     void CreateClients();
 
     webrtc::test::VideoStreamConfig video_stream_config_;
@@ -43,8 +42,6 @@ private:
 
     std::vector<std::unique_ptr<webrtc::test::VideoStreamPair>> video_streams_;
 };
-
-void test_match_active();
 
 }
 
