@@ -4,6 +4,8 @@
 from alphartc_gym import gym
 
 import os
+import glob
+
 
 def test_basic():
     total_stats = []
@@ -43,18 +45,16 @@ def test_multiple_instances():
 
 def test_trace():
     total_stats = []
-    trace_path = os.path.join(
-        os.path.dirname(__file__),
-        "data",
-        "trace_example.json")
-    g = gym.Gym("test_gym")
-    g.reset(trace_path=trace_path, report_interval_ms=60, duration_time_ms=0)
-    while True:
-        stats, done = g.step(1000)
-        if  not done:
-            total_stats += stats
-        else:
-            break
-    assert(total_stats)
-    for stats in total_stats:
-        assert(isinstance(stats, dict))
+    trace_files = os.path.join(os.path.dirname(__file__), "data", "*.json")
+    for trace_file in glob.glob(trace_files):
+        g = gym.Gym("test_gym")
+        g.reset(trace_path=trace_file, report_interval_ms=60, duration_time_ms=0)
+        while True:
+            stats, done = g.step(1000)
+            if  not done:
+                total_stats += stats
+            else:
+                break
+        assert(total_stats)
+        for stats in total_stats:
+            assert(isinstance(stats, dict))

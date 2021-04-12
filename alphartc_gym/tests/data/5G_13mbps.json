@@ -1,0 +1,1226 @@
+{
+    "uplink": {
+        "trace_pattern": [
+            {
+                "capacity": 0,
+                "duration": 200
+            },
+            {
+                "capacity": 0,
+                "duration": 200
+            },
+            {
+                "capacity": 9130,
+                "duration": 199
+            },
+            {
+                "capacity": 8240,
+                "duration": 200
+            },
+            {
+                "capacity": 15300,
+                "duration": 199
+            },
+            {
+                "capacity": 14700,
+                "duration": 199
+            },
+            {
+                "capacity": 16100,
+                "duration": 199
+            },
+            {
+                "capacity": 13700,
+                "duration": 200
+            },
+            {
+                "capacity": 12,
+                "duration": 199
+            },
+            {
+                "capacity": 11400,
+                "duration": 199
+            },
+            {
+                "capacity": 8950,
+                "duration": 200
+            },
+            {
+                "capacity": 13800,
+                "duration": 199
+            },
+            {
+                "capacity": 14300,
+                "duration": 200
+            },
+            {
+                "capacity": 12200,
+                "duration": 199
+            },
+            {
+                "capacity": 12800,
+                "duration": 200
+            },
+            {
+                "capacity": 3960,
+                "duration": 200
+            },
+            {
+                "capacity": 14600,
+                "duration": 199
+            },
+            {
+                "capacity": 11600,
+                "duration": 200
+            },
+            {
+                "capacity": 7730,
+                "duration": 199
+            },
+            {
+                "capacity": 8640,
+                "duration": 200
+            },
+            {
+                "capacity": 10,
+                "duration": 200
+            },
+            {
+                "capacity": 9160,
+                "duration": 200
+            },
+            {
+                "capacity": 13400,
+                "duration": 199
+            },
+            {
+                "capacity": 13200,
+                "duration": 200
+            },
+            {
+                "capacity": 7440,
+                "duration": 200
+            },
+            {
+                "capacity": 8510,
+                "duration": 200
+            },
+            {
+                "capacity": 12300,
+                "duration": 200
+            },
+            {
+                "capacity": 12500,
+                "duration": 199
+            },
+            {
+                "capacity": 12800,
+                "duration": 200
+            },
+            {
+                "capacity": 9440,
+                "duration": 200
+            },
+            {
+                "capacity": 10800,
+                "duration": 200
+            },
+            {
+                "capacity": 6470,
+                "duration": 200
+            },
+            {
+                "capacity": 6890,
+                "duration": 199
+            },
+            {
+                "capacity": 13200,
+                "duration": 200
+            },
+            {
+                "capacity": 13100,
+                "duration": 200
+            },
+            {
+                "capacity": 9640,
+                "duration": 200
+            },
+            {
+                "capacity": 12200,
+                "duration": 200
+            },
+            {
+                "capacity": 11800,
+                "duration": 199
+            },
+            {
+                "capacity": 10700,
+                "duration": 200
+            },
+            {
+                "capacity": 4320,
+                "duration": 200
+            },
+            {
+                "capacity": 6240,
+                "duration": 199
+            },
+            {
+                "capacity": 12600,
+                "duration": 200
+            },
+            {
+                "capacity": 12,
+                "duration": 199
+            },
+            {
+                "capacity": 9840,
+                "duration": 200
+            },
+            {
+                "capacity": 14,
+                "duration": 199
+            },
+            {
+                "capacity": 13100,
+                "duration": 199
+            },
+            {
+                "capacity": 15800,
+                "duration": 200
+            },
+            {
+                "capacity": 14700,
+                "duration": 199
+            },
+            {
+                "capacity": 14,
+                "duration": 200
+            },
+            {
+                "capacity": 14100,
+                "duration": 199
+            },
+            {
+                "capacity": 14800,
+                "duration": 199
+            },
+            {
+                "capacity": 15,
+                "duration": 200
+            },
+            {
+                "capacity": 15600,
+                "duration": 199
+            },
+            {
+                "capacity": 15100,
+                "duration": 200
+            },
+            {
+                "capacity": 15500,
+                "duration": 199
+            },
+            {
+                "capacity": 15700,
+                "duration": 199
+            },
+            {
+                "capacity": 14700,
+                "duration": 200
+            },
+            {
+                "capacity": 13700,
+                "duration": 199
+            },
+            {
+                "capacity": 15100,
+                "duration": 200
+            },
+            {
+                "capacity": 13300,
+                "duration": 199
+            },
+            {
+                "capacity": 10800,
+                "duration": 199
+            },
+            {
+                "capacity": 12600,
+                "duration": 200
+            },
+            {
+                "capacity": 15500,
+                "duration": 199
+            },
+            {
+                "capacity": 15100,
+                "duration": 200
+            },
+            {
+                "capacity": 17100,
+                "duration": 199
+            },
+            {
+                "capacity": 13800,
+                "duration": 199
+            },
+            {
+                "capacity": 9760,
+                "duration": 200
+            },
+            {
+                "capacity": 16100,
+                "duration": 199
+            },
+            {
+                "capacity": 15900,
+                "duration": 200
+            },
+            {
+                "capacity": 14800,
+                "duration": 199
+            },
+            {
+                "capacity": 13,
+                "duration": 199
+            },
+            {
+                "capacity": 4720,
+                "duration": 200
+            },
+            {
+                "capacity": 15300,
+                "duration": 199
+            },
+            {
+                "capacity": 15900,
+                "duration": 200
+            },
+            {
+                "capacity": 9090,
+                "duration": 199
+            },
+            {
+                "capacity": 14,
+                "duration": 199
+            },
+            {
+                "capacity": 15200,
+                "duration": 200
+            },
+            {
+                "capacity": 7610,
+                "duration": 199
+            },
+            {
+                "capacity": 14,
+                "duration": 200
+            },
+            {
+                "capacity": 13600,
+                "duration": 199
+            },
+            {
+                "capacity": 14500,
+                "duration": 199
+            },
+            {
+                "capacity": 13500,
+                "duration": 199
+            },
+            {
+                "capacity": 9050,
+                "duration": 200
+            },
+            {
+                "capacity": 9710,
+                "duration": 199
+            },
+            {
+                "capacity": 15,
+                "duration": 199
+            },
+            {
+                "capacity": 0,
+                "duration": 199
+            },
+            {
+                "capacity": 13800,
+                "duration": 199
+            },
+            {
+                "capacity": 14400,
+                "duration": 200
+            },
+            {
+                "capacity": 9880,
+                "duration": 199
+            },
+            {
+                "capacity": 14,
+                "duration": 199
+            },
+            {
+                "capacity": 7150,
+                "duration": 199
+            },
+            {
+                "capacity": 16200,
+                "duration": 199
+            },
+            {
+                "capacity": 14,
+                "duration": 200
+            },
+            {
+                "capacity": 13400,
+                "duration": 199
+            },
+            {
+                "capacity": 12700,
+                "duration": 199
+            },
+            {
+                "capacity": 11500,
+                "duration": 199
+            },
+            {
+                "capacity": 14100,
+                "duration": 199
+            },
+            {
+                "capacity": 15,
+                "duration": 200
+            },
+            {
+                "capacity": 12100,
+                "duration": 199
+            },
+            {
+                "capacity": 12200,
+                "duration": 199
+            },
+            {
+                "capacity": 9600,
+                "duration": 199
+            },
+            {
+                "capacity": 14300,
+                "duration": 199
+            },
+            {
+                "capacity": 13100,
+                "duration": 200
+            },
+            {
+                "capacity": 14100,
+                "duration": 199
+            },
+            {
+                "capacity": 11900,
+                "duration": 199
+            },
+            {
+                "capacity": 13200,
+                "duration": 199
+            },
+            {
+                "capacity": 14200,
+                "duration": 199
+            },
+            {
+                "capacity": 10,
+                "duration": 200
+            },
+            {
+                "capacity": 16900,
+                "duration": 199
+            },
+            {
+                "capacity": 14400,
+                "duration": 199
+            },
+            {
+                "capacity": 15500,
+                "duration": 199
+            },
+            {
+                "capacity": 14700,
+                "duration": 199
+            },
+            {
+                "capacity": 14400,
+                "duration": 200
+            },
+            {
+                "capacity": 14800,
+                "duration": 199
+            },
+            {
+                "capacity": 13200,
+                "duration": 199
+            },
+            {
+                "capacity": 13700,
+                "duration": 199
+            },
+            {
+                "capacity": 14900,
+                "duration": 199
+            },
+            {
+                "capacity": 15400,
+                "duration": 200
+            },
+            {
+                "capacity": 14600,
+                "duration": 199
+            },
+            {
+                "capacity": 13200,
+                "duration": 199
+            },
+            {
+                "capacity": 11900,
+                "duration": 199
+            },
+            {
+                "capacity": 15600,
+                "duration": 199
+            },
+            {
+                "capacity": 11100,
+                "duration": 200
+            },
+            {
+                "capacity": 16,
+                "duration": 199
+            },
+            {
+                "capacity": 15400,
+                "duration": 199
+            },
+            {
+                "capacity": 14700,
+                "duration": 199
+            },
+            {
+                "capacity": 14600,
+                "duration": 199
+            },
+            {
+                "capacity": 14900,
+                "duration": 200
+            },
+            {
+                "capacity": 14900,
+                "duration": 199
+            },
+            {
+                "capacity": 14400,
+                "duration": 199
+            },
+            {
+                "capacity": 13300,
+                "duration": 199
+            },
+            {
+                "capacity": 12300,
+                "duration": 199
+            },
+            {
+                "capacity": 14700,
+                "duration": 200
+            },
+            {
+                "capacity": 12500,
+                "duration": 199
+            },
+            {
+                "capacity": 14200,
+                "duration": 199
+            },
+            {
+                "capacity": 8,
+                "duration": 199
+            },
+            {
+                "capacity": 16500,
+                "duration": 199
+            },
+            {
+                "capacity": 14600,
+                "duration": 200
+            },
+            {
+                "capacity": 8750,
+                "duration": 199
+            },
+            {
+                "capacity": 15300,
+                "duration": 199
+            },
+            {
+                "capacity": 18200,
+                "duration": 199
+            },
+            {
+                "capacity": 15200,
+                "duration": 199
+            },
+            {
+                "capacity": 15700,
+                "duration": 200
+            },
+            {
+                "capacity": 13400,
+                "duration": 199
+            },
+            {
+                "capacity": 14200,
+                "duration": 199
+            },
+            {
+                "capacity": 13800,
+                "duration": 199
+            },
+            {
+                "capacity": 13,
+                "duration": 199
+            },
+            {
+                "capacity": 15300,
+                "duration": 200
+            },
+            {
+                "capacity": 14500,
+                "duration": 199
+            },
+            {
+                "capacity": 14100,
+                "duration": 199
+            },
+            {
+                "capacity": 15700,
+                "duration": 199
+            },
+            {
+                "capacity": 13300,
+                "duration": 199
+            },
+            {
+                "capacity": 14500,
+                "duration": 200
+            },
+            {
+                "capacity": 13700,
+                "duration": 199
+            },
+            {
+                "capacity": 14500,
+                "duration": 199
+            },
+            {
+                "capacity": 13400,
+                "duration": 199
+            },
+            {
+                "capacity": 12600,
+                "duration": 199
+            },
+            {
+                "capacity": 12200,
+                "duration": 200
+            },
+            {
+                "capacity": 11300,
+                "duration": 199
+            },
+            {
+                "capacity": 12800,
+                "duration": 199
+            },
+            {
+                "capacity": 12600,
+                "duration": 200
+            },
+            {
+                "capacity": 10700,
+                "duration": 199
+            },
+            {
+                "capacity": 10100,
+                "duration": 200
+            },
+            {
+                "capacity": 13500,
+                "duration": 199
+            },
+            {
+                "capacity": 14200,
+                "duration": 200
+            },
+            {
+                "capacity": 12900,
+                "duration": 200
+            },
+            {
+                "capacity": 14,
+                "duration": 199
+            },
+            {
+                "capacity": 13300,
+                "duration": 200
+            },
+            {
+                "capacity": 14300,
+                "duration": 199
+            },
+            {
+                "capacity": 13100,
+                "duration": 200
+            },
+            {
+                "capacity": 13200,
+                "duration": 200
+            },
+            {
+                "capacity": 13900,
+                "duration": 199
+            },
+            {
+                "capacity": 14700,
+                "duration": 200
+            },
+            {
+                "capacity": 13100,
+                "duration": 199
+            },
+            {
+                "capacity": 12,
+                "duration": 200
+            },
+            {
+                "capacity": 10600,
+                "duration": 200
+            },
+            {
+                "capacity": 13,
+                "duration": 199
+            },
+            {
+                "capacity": 13500,
+                "duration": 200
+            },
+            {
+                "capacity": 13700,
+                "duration": 199
+            },
+            {
+                "capacity": 12100,
+                "duration": 200
+            },
+            {
+                "capacity": 12900,
+                "duration": 200
+            },
+            {
+                "capacity": 11300,
+                "duration": 199
+            },
+            {
+                "capacity": 14400,
+                "duration": 200
+            },
+            {
+                "capacity": 13400,
+                "duration": 199
+            },
+            {
+                "capacity": 13900,
+                "duration": 200
+            },
+            {
+                "capacity": 13,
+                "duration": 200
+            },
+            {
+                "capacity": 14600,
+                "duration": 199
+            },
+            {
+                "capacity": 14,
+                "duration": 200
+            },
+            {
+                "capacity": 12600,
+                "duration": 199
+            },
+            {
+                "capacity": 15100,
+                "duration": 200
+            },
+            {
+                "capacity": 14400,
+                "duration": 200
+            },
+            {
+                "capacity": 14900,
+                "duration": 199
+            },
+            {
+                "capacity": 13200,
+                "duration": 200
+            },
+            {
+                "capacity": 14500,
+                "duration": 199
+            },
+            {
+                "capacity": 15200,
+                "duration": 200
+            },
+            {
+                "capacity": 14600,
+                "duration": 200
+            },
+            {
+                "capacity": 15600,
+                "duration": 199
+            },
+            {
+                "capacity": 14600,
+                "duration": 200
+            },
+            {
+                "capacity": 14700,
+                "duration": 199
+            },
+            {
+                "capacity": 13900,
+                "duration": 200
+            },
+            {
+                "capacity": 13600,
+                "duration": 200
+            },
+            {
+                "capacity": 14900,
+                "duration": 199
+            },
+            {
+                "capacity": 13900,
+                "duration": 200
+            },
+            {
+                "capacity": 15900,
+                "duration": 199
+            },
+            {
+                "capacity": 14400,
+                "duration": 200
+            },
+            {
+                "capacity": 14900,
+                "duration": 200
+            },
+            {
+                "capacity": 15900,
+                "duration": 199
+            },
+            {
+                "capacity": 15800,
+                "duration": 200
+            },
+            {
+                "capacity": 15,
+                "duration": 199
+            },
+            {
+                "capacity": 14700,
+                "duration": 200
+            },
+            {
+                "capacity": 14200,
+                "duration": 200
+            },
+            {
+                "capacity": 12700,
+                "duration": 199
+            },
+            {
+                "capacity": 11500,
+                "duration": 200
+            },
+            {
+                "capacity": 13500,
+                "duration": 199
+            },
+            {
+                "capacity": 6600,
+                "duration": 200
+            },
+            {
+                "capacity": 12800,
+                "duration": 200
+            },
+            {
+                "capacity": 13200,
+                "duration": 199
+            },
+            {
+                "capacity": 14100,
+                "duration": 200
+            },
+            {
+                "capacity": 14300,
+                "duration": 199
+            },
+            {
+                "capacity": 16,
+                "duration": 200
+            },
+            {
+                "capacity": 15500,
+                "duration": 200
+            },
+            {
+                "capacity": 12300,
+                "duration": 199
+            },
+            {
+                "capacity": 16200,
+                "duration": 200
+            },
+            {
+                "capacity": 15900,
+                "duration": 199
+            },
+            {
+                "capacity": 9760,
+                "duration": 200
+            },
+            {
+                "capacity": 12800,
+                "duration": 200
+            },
+            {
+                "capacity": 14500,
+                "duration": 199
+            },
+            {
+                "capacity": 15,
+                "duration": 200
+            },
+            {
+                "capacity": 15200,
+                "duration": 199
+            },
+            {
+                "capacity": 14700,
+                "duration": 200
+            },
+            {
+                "capacity": 14500,
+                "duration": 200
+            },
+            {
+                "capacity": 14300,
+                "duration": 199
+            },
+            {
+                "capacity": 14700,
+                "duration": 200
+            },
+            {
+                "capacity": 14,
+                "duration": 199
+            },
+            {
+                "capacity": 14,
+                "duration": 200
+            },
+            {
+                "capacity": 14300,
+                "duration": 200
+            },
+            {
+                "capacity": 13800,
+                "duration": 199
+            },
+            {
+                "capacity": 14200,
+                "duration": 200
+            },
+            {
+                "capacity": 14600,
+                "duration": 199
+            },
+            {
+                "capacity": 14500,
+                "duration": 200
+            },
+            {
+                "capacity": 14300,
+                "duration": 200
+            },
+            {
+                "capacity": 12400,
+                "duration": 199
+            },
+            {
+                "capacity": 14500,
+                "duration": 200
+            },
+            {
+                "capacity": 13600,
+                "duration": 199
+            },
+            {
+                "capacity": 13800,
+                "duration": 200
+            },
+            {
+                "capacity": 14700,
+                "duration": 200
+            },
+            {
+                "capacity": 14400,
+                "duration": 199
+            },
+            {
+                "capacity": 12,
+                "duration": 200
+            },
+            {
+                "capacity": 14100,
+                "duration": 199
+            },
+            {
+                "capacity": 14600,
+                "duration": 200
+            },
+            {
+                "capacity": 13800,
+                "duration": 200
+            },
+            {
+                "capacity": 13600,
+                "duration": 199
+            },
+            {
+                "capacity": 14,
+                "duration": 200
+            },
+            {
+                "capacity": 9080,
+                "duration": 199
+            },
+            {
+                "capacity": 14400,
+                "duration": 200
+            },
+            {
+                "capacity": 13600,
+                "duration": 200
+            },
+            {
+                "capacity": 12500,
+                "duration": 199
+            },
+            {
+                "capacity": 9730,
+                "duration": 200
+            },
+            {
+                "capacity": 11600,
+                "duration": 199
+            },
+            {
+                "capacity": 14300,
+                "duration": 200
+            },
+            {
+                "capacity": 13400,
+                "duration": 200
+            },
+            {
+                "capacity": 14,
+                "duration": 199
+            },
+            {
+                "capacity": 14600,
+                "duration": 200
+            },
+            {
+                "capacity": 16200,
+                "duration": 199
+            },
+            {
+                "capacity": 14200,
+                "duration": 200
+            },
+            {
+                "capacity": 13900,
+                "duration": 200
+            },
+            {
+                "capacity": 14700,
+                "duration": 199
+            },
+            {
+                "capacity": 10,
+                "duration": 200
+            },
+            {
+                "capacity": 1600,
+                "duration": 199
+            },
+            {
+                "capacity": 16399999,
+                "duration": 200
+            },
+            {
+                "capacity": 15100,
+                "duration": 200
+            },
+            {
+                "capacity": 16399999,
+                "duration": 199
+            },
+            {
+                "capacity": 14500,
+                "duration": 200
+            },
+            {
+                "capacity": 13800,
+                "duration": 199
+            },
+            {
+                "capacity": 14900,
+                "duration": 200
+            },
+            {
+                "capacity": 13600,
+                "duration": 200
+            },
+            {
+                "capacity": 16399999,
+                "duration": 199
+            },
+            {
+                "capacity": 15100,
+                "duration": 200
+            },
+            {
+                "capacity": 16200,
+                "duration": 199
+            },
+            {
+                "capacity": 15400,
+                "duration": 200
+            },
+            {
+                "capacity": 16200,
+                "duration": 200
+            },
+            {
+                "capacity": 15600,
+                "duration": 199
+            },
+            {
+                "capacity": 13600,
+                "duration": 200
+            },
+            {
+                "capacity": 15600,
+                "duration": 199
+            },
+            {
+                "capacity": 18700,
+                "duration": 200
+            },
+            {
+                "capacity": 10900,
+                "duration": 200
+            },
+            {
+                "capacity": 14800,
+                "duration": 199
+            },
+            {
+                "capacity": 16100,
+                "duration": 200
+            },
+            {
+                "capacity": 15900,
+                "duration": 199
+            },
+            {
+                "capacity": 17900,
+                "duration": 200
+            },
+            {
+                "capacity": 16700,
+                "duration": 200
+            },
+            {
+                "capacity": 16800,
+                "duration": 199
+            },
+            {
+                "capacity": 13200,
+                "duration": 200
+            },
+            {
+                "capacity": 16300,
+                "duration": 199
+            },
+            {
+                "capacity": 16700,
+                "duration": 200
+            },
+            {
+                "capacity": 16900,
+                "duration": 200
+            },
+            {
+                "capacity": 16600,
+                "duration": 199
+            },
+            {
+                "capacity": 17800,
+                "duration": 200
+            },
+            {
+                "capacity": 18100,
+                "duration": 199
+            },
+            {
+                "capacity": 17,
+                "duration": 200
+            },
+            {
+                "capacity": 17500,
+                "duration": 200
+            },
+            {
+                "capacity": 16700,
+                "duration": 199
+            },
+            {
+                "capacity": 16500,
+                "duration": 200
+            },
+            {
+                "capacity": 15500,
+                "duration": 199
+            },
+            {
+                "capacity": 15100,
+                "duration": 140
+            }
+        ]
+    }
+}
