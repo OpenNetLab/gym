@@ -33,10 +33,10 @@ class Gym(object):
                         "trace_pattern": [
                             {
                                 "duration": 60000, # duration time
-                                "capacity": 300,   # link bandwidth(kbps)
-                                "loss": 0,         # not used in current version
-                                "jitter": 0,       # not used in current version
-                                "time": 0.0        # not used in current version
+                                "capacity": 300,   # link bandwidth (kbps)
+                                "loss": 0.1,       # loss rate (0.0~0.1)
+                                "rtt" : 85,        # round trip delay (ms)
+                                "jitter": 0,       # not supported in current version
                             },
                             ...
                         ]
