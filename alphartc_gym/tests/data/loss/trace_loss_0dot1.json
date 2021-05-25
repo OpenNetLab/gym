@@ -8,8 +8,7 @@
                 "capacity": 1000,
                 "loss": 0.1,
                 "rtt": 0,
-                "jitter": 0,
-                "time": 0.0
+                "jitter": 0
             }
         ]
     }
