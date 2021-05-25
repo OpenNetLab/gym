@@ -8,32 +8,28 @@
                 "capacity": 1000,
                 "loss": 0,
                 "rtt": 0,
-                "jitter": 0,
-                "time": 0.0
+                "jitter": 0
             },
             {
                 "duration": 500,
                 "capacity": 1000,
                 "loss": 0.2,
                 "rtt": 0,
-                "jitter": 0,
-                "time": 0.0
+                "jitter": 0
             },
             {
                 "duration": 500,
                 "capacity": 1000,
                 "loss": 0.5,
                 "rtt": 0,
-                "jitter": 0,
-                "time": 0.0
+                "jitter": 0
             },
             {
                 "duration": 500,
                 "capacity": 1000,
                 "loss": 0.2,
                 "rtt": 0,
-                "jitter": 0,
-                "time": 0.0
+                "jitter": 0
             }
         ]
     }

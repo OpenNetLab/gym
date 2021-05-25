@@ -7,8 +7,7 @@
                 "duration": 60000,
                 "capacity": 300,
                 "loss": 0,
-                "jitter": 0,
-                "time": 0.0
+                "jitter": 0
             }
         ]
     }
