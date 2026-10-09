@@ -58,3 +58,24 @@ python3 -m pytest alphartc_gym
 
 Thanks [SoonyangZhang](https://github.com/SoonyangZhang) provides the inspiration for the gym
 
+### License
+
+Project-owned original code is licensed under the [BSD 3-Clause License](LICENSE).
+This license does not relicense third-party material, including copied or adapted
+code and submodules; their existing copyright notices and license terms remain
+applicable. Dependencies retain their respective terms.
+
+In particular, WebRTC-derived files in `ns-app/src/ex-webrtc/model/` retain their
+WebRTC notices. See the pinned AlphaRTC/WebRTC
+[LICENSE](https://github.com/OpenNetLab/AlphaRTC/blob/26a537041b37ece816c51d36814a1264b93cd51a/LICENSE),
+[PATENTS](https://github.com/OpenNetLab/AlphaRTC/blob/26a537041b37ece816c51d36814a1264b93cd51a/PATENTS),
+and [AUTHORS](https://github.com/OpenNetLab/AlphaRTC/blob/26a537041b37ece816c51d36814a1264b93cd51a/AUTHORS).
+The pinned ns-3 dependency has its own
+[GPL license](https://gitlab.com/nsnam/ns-3-dev/-/blob/c147ce83a20e129b12253353bf7015796795c957/LICENSE).
+
+The build statically links ns-3 with the Gym extensions and AlphaRTC/WebRTC.
+Distribution of combined binaries or container images containing those binaries
+must satisfy the applicable GPL terms, including corresponding-source obligations,
+as well as other applicable dependency licenses and notice requirements. The BSD
+license for project-owned code alone does not grant permission to distribute the
+entire compiled product as closed-source software.
